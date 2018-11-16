@@ -1,37 +1,40 @@
-#pragma comment(linker , "/entry:WinMainCRTStartup /subsystem:console")
 #include "Game.h"
+#include <iostream>
 
 void FrameDelay(int maxFPS);
-Game* game = 0;
 
 int main(int argc, char* argv[])
 {
-
-    game = new Game();
-    game->init("Ulgrak", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 960, 720, false);
-
-    while (game->running())
+    std::cout << "Game Init Attempt...\n";
+    if (!Game::Instance()->Init("PP14.MInputHandler", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, false))
     {
-        game->handleEvents();
-        game->update();
-        game->render();
-        FrameDelay(144);
+        std::cout << "Game Init Failure - " << SDL_GetError() << std::endl;
+        return -1;
     }
-    game->clean();
+
+    std::cout << "Game Init Success!\n";
+    while (Game::Instance()->IsRunning())
+    {
+        Game::Instance()->HandleEvents();
+        Game::Instance()->Update();
+        Game::Instance()->Render();
+		FrameDelay(144);
+    }
+
+    std::cout << "Closing Game...\n";
+    Game::Instance()->Clean();
 
     return 0;
 }
-
 void FrameDelay(int maxFPS)
 {
-    static const int latency = int((float)1000 / maxFPS + 0.5f);
-    static unsigned int frameStart;
-    static int frameTime;
+	static Uint32 frameStart;
+	int latency = int((float)1000 / maxFPS + 0.5f);
+	int frameTime = SDL_GetTicks() - frameStart;
 
-    frameTime = SDL_GetTicks() - frameStart;
-    if (frameTime < latency)
-    {
-        SDL_Delay(latency - frameTime);
-    }
-    frameStart = SDL_GetTicks();
+	if (frameTime < latency)
+	{
+		SDL_Delay(latency - frameTime);
+	}
+	frameStart = SDL_GetTicks();
 }

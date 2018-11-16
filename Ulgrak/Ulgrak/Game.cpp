@@ -1,108 +1,85 @@
 #include "Game.h"
+#include "TextureManager.h"
+#include "LoaderParams.h"
+#include "InputHandler.h"
 #include "Player.h"
-#include "Box.h"
-#define BOX_NUM 5
+#include "Enemy.h"
+#include <SDL_image.h>
+#include <iostream>
 
-SDL_Event Game::event;
-SDL_Renderer* Game::renderer = nullptr;
-float Game::deltaTime;
+Game* Game::pInstance = nullptr;
 
-Player* player;
-Box* box[BOX_NUM];
-
-bool Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
+bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
-    int flags;
-    if (fullscreen)
-    {
-        flags = SDL_WINDOW_FULLSCREEN;
-    }
-    else
-    {
-        flags = SDL_WINDOW_SHOWN;
-    }
-
     if (SDL_Init(SDL_INIT_EVERYTHING) >= 0)
     {
-        window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
-
-        if (window != 0)
+        Uint32 flags;
+        if (fullscreen)
         {
-            renderer = SDL_CreateRenderer(window, -1, 0);
+            flags = SDL_WINDOW_FULLSCREEN_DESKTOP;
+        }
+        else
+        {
+            flags = SDL_WINDOW_SHOWN;
         }
 
-        oldTicks = SDL_GetTicks();
-        player = new Player();
-        box[0] = new Box(0, 500, 256, 64);
-        box[1] = new Box(256, 500, 64, 128);
-        box[2] = new Box(320, 564, 512, 64);
-        box[3] = new Box(832, 320, 64, 308);
-        box[4] = new Box(896, 320, 64, 64);
-        player->GetBoxes(box, BOX_NUM);
+        pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
+        if (pWindow != 0)
+        {
+            pRenderer = SDL_CreateRenderer(pWindow, -1, 0);
+        }
 
-        isRunning = true;
+        SDL_SetRenderDrawColor(pRenderer, 0, 40, 60, 255);
+        if (!TextureManager::Instance()->Load("../Assets/animate-alpha.png", "animate", pRenderer))
+        {
+            return false;
+        }
+
+        gameObjects.push_back(new Player(new LoaderParams(100, 100, 128, 82, "animate")));
+        gameObjects.push_back(new Enemy(new LoaderParams(0, 0, 128, 82, "animate")));
+
+        running = true;
     }
     else
     {
-        isRunning = false;
+        running = false;
     }
-
-    return isRunning;
+    return running;
 }
 
-void Game::handleEvents()
+void Game::Render()
 {
-
-    if (SDL_PollEvent(&event))
+    SDL_RenderClear(pRenderer);
+    for (auto const& i : gameObjects)
     {
-        switch (event.type)
-        {
-        case SDL_QUIT:
-            isRunning = false;
-            break;
-        default:
-            break;
-        }
+        i->Draw();
     }
+    SDL_RenderPresent(pRenderer);
 }
 
-void Game::update()
+void Game::Update()
 {
-    SetDeltaTime();
-
-    player->Move();
-}
-
-void Game::render()
-{
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
-
-    player->Render();
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    for (int i = 0; i < BOX_NUM; i++)
+    for (auto const& i : gameObjects)
     {
-        box[i]->Render();
+        i->Update();
     }
-
-    SDL_RenderPresent(renderer);
 }
 
-void Game::clean()
+void Game::Quit()
 {
-    player->~Player();
-    SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(renderer);
+	running = false;
+}
+
+void Game::Clean()
+{
+    std::cout << "cleaning game\n";
+	InputHandler::Instance()->Clean();
+    SDL_DestroyWindow(pWindow);
+    SDL_DestroyRenderer(pRenderer);
     SDL_Quit();
 }
 
-bool Game::running()
+void Game::HandleEvents()
 {
-    return isRunning;
-}
-
-void Game::SetDeltaTime()
-{
-    deltaTime = (float)(SDL_GetTicks() - oldTicks) / 1000;
-    oldTicks = SDL_GetTicks();
+	InputHandler::Instance()->Update();
 }

@@ -1,22 +1,20 @@
 #ifndef GameObject_h
 #define GameObject_h
-#include "Game.h"
+#include <SDL.h>
+#include <string>
+
+class LoaderParams;
 
 class GameObject
 {
 public:
-    GameObject(const char* textureSheet, SDL_Renderer* renderer);
-    ~GameObject();
+    virtual void Draw() = 0;
+    virtual void Update() = 0;
+    virtual void Clean() = 0;
 
-    void Update();
-    void Render();
-
-private:
-    int xpos;
-    int ypos;
-
-    SDL_Texture* objTexture;
-    SDL_Rect srcRect, dstRect;
-    SDL_Renderer* renderer;
+protected:
+    GameObject(const LoaderParams* pParams) {}
+    virtual ~GameObject() {}
 };
+
 #endif

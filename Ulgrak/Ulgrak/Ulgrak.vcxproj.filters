@@ -9,6 +9,13 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="SDLGameObject.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box.h" />
@@ -16,6 +23,17 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="GameObject.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="Vector2D.h" />
+    <ClInclude Include="SDLGameObject.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="LoaderParams.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
