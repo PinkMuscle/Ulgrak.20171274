@@ -1,7 +1,6 @@
 #ifndef GameObject_h
 #define GameObject_h
 #include <SDL.h>
-#include <string>
 
 class LoaderParams;
 
