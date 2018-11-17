@@ -6,7 +6,7 @@ void FrameDelay(int maxFPS);
 int main(int argc, char* argv[])
 {
     std::cout << "Game Init Attempt...\n";
-    if (!Game::Instance()->Init("PP14.MInputHandler", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, false))
+    if (!Game::Instance()->Init("Ulgrak", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 960, 720, false))
     {
         std::cout << "Game Init Failure - " << SDL_GetError() << std::endl;
         return -1;
