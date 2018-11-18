@@ -1,13 +1,13 @@
 #include "Player.h"
 #include "InputHandler.h"
 
-Player::Player(const LoaderParams* pParams) : SDLGameObject(pParams)
+Player::Player(const LoaderParams* pParams) : GameObject(pParams)
 {
 }
 
 void Player::Draw()
 {
-	SDLGameObject::Draw();
+	GameObject::Draw();
 }
 
 void Player::Update()
@@ -15,7 +15,7 @@ void Player::Update()
 	velocity = Vector2D(0.0f, 0.0f);
 	HandleInput();
 	currentFrame = int(((SDL_GetTicks() / 100) % 6));
-	SDLGameObject::Update();
+	GameObject::Update();
 }
 
 void Player::Clean()

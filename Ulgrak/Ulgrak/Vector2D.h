@@ -8,7 +8,7 @@ public:
     float y;
 
     Vector2D() : x(0.0f), y(0.0f) {}
-	Vector2D(float x, float y) : x(x), y(y) {}
+	Vector2D(float x_, float y_) : x(x_), y(y_) {}
 
     Vector2D operator+(const Vector2D& v2) const;
     Vector2D operator-(const Vector2D& v2) const;

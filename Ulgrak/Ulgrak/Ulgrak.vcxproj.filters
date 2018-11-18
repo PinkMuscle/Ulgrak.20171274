@@ -3,40 +3,46 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="InputHandler.cpp" />
-    <ClCompile Include="SDLGameObject.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Vector2D.cpp" />
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="TextureManager.h" />
-    <ClInclude Include="GameObject.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Vector2D.h" />
-    <ClInclude Include="SDLGameObject.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="LoaderParams.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
+    <ClInclude Include="GameObject.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Player.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="TrasformComponent.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObjects">
       <UniqueIdentifier>{b2cb4726-2f1f-452c-8238-93a6ebec1d35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{eabd9252-4d2e-45cb-9344-6c9d51ab52a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

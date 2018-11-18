@@ -30,7 +30,7 @@ private:
 	Game() {}
     static Game* pInstance;
 
-	SDL_Window * pWindow;
+	SDL_Window* pWindow;
 	SDL_Renderer* pRenderer;
 	bool running;
 
