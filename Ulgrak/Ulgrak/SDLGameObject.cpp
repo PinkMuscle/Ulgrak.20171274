@@ -14,7 +14,7 @@ SDLGameObject::SDLGameObject(const LoaderParams* pParams) : GameObject(pParams),
 
 void SDLGameObject::Draw()
 {
-    TextureManager::Instance()->DrawFrame(textureID, int(position.GetX() + 0.5f), int(position.GetY() + 0.5f), width, height, currentRow, currentFrame, Game::Instance()->GetRenderer());
+    TextureManager::Instance()->DrawFrame(textureID, int(position.x + 0.5f), int(position.y + 0.5f), width, height, currentRow, currentFrame, Game::Instance()->GetRenderer());
 }
 
 void SDLGameObject::Update()

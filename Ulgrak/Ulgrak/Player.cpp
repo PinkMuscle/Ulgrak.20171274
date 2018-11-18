@@ -26,18 +26,18 @@ void Player::HandleInput()
 {
 	if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_RIGHT))
 	{
-		velocity.SetX(2);
+		velocity.x = 2;
 	}
 	if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_LEFT))
 	{
-		velocity.SetX(-2);
+		velocity.x = -2;
 	}
 	if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_UP))
 	{
-		velocity.SetY(-2);
+		velocity.y = -2;
 	}
 	if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_DOWN))
 	{
-		velocity.SetY(2);
+		velocity.y = 2;
 	}
 }

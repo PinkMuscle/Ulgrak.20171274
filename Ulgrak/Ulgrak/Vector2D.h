@@ -4,12 +4,11 @@
 class Vector2D
 {
 public:
+    float x;
+    float y;
+
     Vector2D() : x(0.0f), y(0.0f) {}
 	Vector2D(float x, float y) : x(x), y(y) {}
-	float GetX() { return this->x; }
-	float GetY() { return this->y; }
-	void SetX(float x) { this->x = x; }
-	void SetY(float y) { this->y = y; }
 
     Vector2D operator+(const Vector2D& v2) const;
     Vector2D operator-(const Vector2D& v2) const;
@@ -26,10 +25,6 @@ public:
     Vector2D& Normalize();
     Vector2D Normalized() const;
     Vector2D& Zero();
-
-private:
-	float x;
-	float y;
 };
 
 #endif
