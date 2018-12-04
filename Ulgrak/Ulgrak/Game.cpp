@@ -3,8 +3,12 @@
 #include "LoaderParams.h"
 #include "InputHandler.h"
 #include "Player.h"
+#include "Enemy.h"
 #include <SDL_image.h>
 #include <iostream>
+//아래는 나중에 묶을 것
+#include "MenuState.h"
+#include "PlayState.h"
 
 Game* Game::pInstance = nullptr;
 
@@ -29,12 +33,16 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
         }
 
         SDL_SetRenderDrawColor(pRenderer, 0, 40, 60, 255);
-        if (!TextureManager::Instance()->Load("../Assets/animate-alpha.png", "animate", pRenderer))
+        if (!TextureManager::Instance()->Load("../assets/animate-alpha.png", "animate", pRenderer))
         {
             return false;
         }
 
         gameObjects.push_back(new Player(new LoaderParams(100, 100, 128, 82, "animate")));
+        gameObjects.push_back(new Enemy(new LoaderParams(0, 0, 128, 82, "animate")));
+
+        pGameStateMachine = new GameStateMachine();
+        pGameStateMachine->ChangeState(MenuState::Instance());
 
         running = true;
     }
@@ -48,19 +56,13 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 void Game::Render()
 {
     SDL_RenderClear(pRenderer);
-    for (auto const& i : gameObjects)
-    {
-        i->Draw();
-    }
+    pGameStateMachine->Render();
     SDL_RenderPresent(pRenderer);
 }
 
 void Game::Update()
 {
-    for (auto const& i : gameObjects)
-    {
-        i->Update();
-    }
+    pGameStateMachine->Update();
 }
 
 void Game::Quit()
@@ -80,4 +82,9 @@ void Game::Clean()
 void Game::HandleEvents()
 {
 	InputHandler::Instance()->Update();
+    if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_RETURN))
+    {
+        pGameStateMachine->ChangeState(PlayState::Instance());
+    }
+
 }

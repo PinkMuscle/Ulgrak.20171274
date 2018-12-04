@@ -15,6 +15,10 @@ void InputHandler::Clean()
 {
 }
 
+void InputHandler::Reset()
+{
+}
+
 bool InputHandler::IsKeyDown(SDL_Scancode key) const
 {
 	if (keyStates != 0)
@@ -64,8 +68,8 @@ void InputHandler::Update()
 
 void InputHandler::OnMouseMove(const SDL_Event& event)
 {
-	mousePosition.x = float(event.motion.x);
-	mousePosition.y = float(event.motion.y);
+	mousePosition.SetX(float(event.motion.x));
+	mousePosition.SetY(float(event.motion.y));
 }
 
 void InputHandler::OnMouseButtonDown(const SDL_Event& event)

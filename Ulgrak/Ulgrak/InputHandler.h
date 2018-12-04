@@ -14,6 +14,7 @@ enum mouse_buttons
 class InputHandler
 {
 public:
+	~InputHandler() {}
 	static InputHandler* Instance()
 	{
 		if (pInstance == nullptr) {
@@ -24,6 +25,7 @@ public:
 
 	void Update();
 	void Clean();
+    void Reset();
 	bool IsKeyDown(SDL_Scancode key) const;
 	bool GetMouseButtonState(mouse_buttons buttonNumber) const
 	{
@@ -36,7 +38,6 @@ public:
 
 private:
 	InputHandler();
-	~InputHandler() {}
 	static InputHandler* pInstance;
 
 	const Uint8* keyStates;
@@ -46,8 +47,6 @@ private:
 	void OnMouseMove(const SDL_Event& event);
 	void OnMouseButtonDown(const SDL_Event& event);
 	void OnMouseButtonUp(const SDL_Event& event);
-	//void OnKeyDown(const SDL_Event& event);
-	//void OnKeyUp(const SDL_Event& event);
 };
 
 #endif

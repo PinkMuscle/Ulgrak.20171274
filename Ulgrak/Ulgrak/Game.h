@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <vector>
 #include "GameObject.h"
+#include "GameStateMachine.h"
 
 class Game
 {
@@ -25,6 +26,7 @@ public:
 	void Clean();
 	bool IsRunning() const { return running; }
     SDL_Renderer* GetRenderer() const { return pRenderer; }
+    GameStateMachine* GetStateMachine() const { return pGameStateMachine; }
 
 private:
 	Game() {}
@@ -35,6 +37,7 @@ private:
 	bool running;
 
     std::vector<GameObject*> gameObjects;
+    GameStateMachine* pGameStateMachine;
 };
 
 #endif Game_h
