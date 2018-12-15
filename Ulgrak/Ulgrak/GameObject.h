@@ -15,6 +15,7 @@ public:
     virtual void Destroy() { active = false; }
 
     Vector2D GetPosition() const { return position; }
+    Vector2D GetVelocity() const { return velocity; }
     int GetWidth() const { return width; }
     int GetHeight() const { return height; }
     float GetScale() const { return scale; }
@@ -23,7 +24,6 @@ public:
 protected:
     Vector2D position;
     Vector2D velocity;
-    Vector2D acceleration;
     int width;
     int height;
     int currentFrame;

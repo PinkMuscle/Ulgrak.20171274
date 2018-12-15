@@ -28,7 +28,6 @@ void GameObject::Draw()
 
 void GameObject::Update()
 {
-    velocity += acceleration;
     position += velocity;
 }
 
