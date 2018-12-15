@@ -65,6 +65,9 @@
     <ClInclude Include="GunItem.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ECS">
@@ -127,6 +130,9 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="GunItem.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>

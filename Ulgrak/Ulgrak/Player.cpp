@@ -8,7 +8,7 @@ constexpr float firstJumpPower = -3.0f;
 constexpr float secondJumpPower = -3.6f;
 constexpr float gravity = 0.07f;
 
-Player::Player(const LoaderParams& pParams, std::vector<std::unique_ptr<GameObject>>& platforms_) : GameObject(pParams), platforms(platforms_), gun(pParams, *this)
+Player::Player(const LoaderParams& pParams, std::vector<std::unique_ptr<GameObject>>& platforms_, std::vector<std::unique_ptr<GameObject>>& projectiles_) : GameObject(pParams), platforms(platforms_), gun(pParams, *this, projectiles_)
 {
     oldY = position.y;
 }
@@ -124,110 +124,119 @@ void Player::ChangeGun(std::string tag)
     gun.Change(tag);
 }
 
+void Player::Damaged(float vel)
+{
+    velocity.x += vel;
+    nextWake = SDL_GetTicks() + 200;
+}
+
 void Player::HandleInput()
 {
     float direction = 0.0f;
 
-    if (tag == "1P")
+    if (SDL_GetTicks() > nextWake)
     {
-        if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_D))
+        if (tag == "1P")
         {
-            currentFrame = int(((SDL_GetTicks() / 100) % 2));
-            direction = 1.0f;
-        }
-        else if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_A))
-        {
-            currentFrame = int(((SDL_GetTicks() / 100) % 2));
-            direction = -1.0f;
-        }
-        else
-        {
-            currentFrame = 0;
-        }
-
-        if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_W))
-        {
-            if (!prevButtonState)
+            if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_D))
             {
-                prevButtonState = true;
-                if (jump > 0)
+                currentFrame = int(((SDL_GetTicks() / 100) % 2));
+                direction = 1.0f;
+            }
+            else if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_A))
+            {
+                currentFrame = int(((SDL_GetTicks() / 100) % 2));
+                direction = -1.0f;
+            }
+            else
+            {
+                currentFrame = 0;
+            }
+
+            if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_W))
+            {
+                if (!prevButtonState)
                 {
-                    if (jump == 2) velocity.y = firstJumpPower;
-                    else velocity.y = secondJumpPower;
-                    onPlatform = false;
-                    onHalfPlatform = false;
-                    jump--;
+                    prevButtonState = true;
+                    if (jump > 0)
+                    {
+                        if (jump == 2) velocity.y = firstJumpPower;
+                        else velocity.y = secondJumpPower;
+                        onPlatform = false;
+                        onHalfPlatform = false;
+                        jump--;
+                    }
                 }
             }
-        }
-        else
-        {
-            prevButtonState = false;
-        }
-
-        if (onHalfPlatform && InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_S))
-        {
-            onPlatform = false;
-            onHalfPlatform = false;
-            jump = 1;
-            position.y += 1;
-            oldY += 1;
-        }
-
-        if (onHalfPlatform && InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_LSHIFT))
-        {
-            gun.Shot();
-        }
-    }
-    else if (tag == "2P")
-    {
-        if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_RIGHT))
-        {
-            currentFrame = int(((SDL_GetTicks() / 100) % 2));
-            direction = 1.0f;
-        }
-        else if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_LEFT))
-        {
-            currentFrame = int(((SDL_GetTicks() / 100) % 2));
-            direction = -1.0f;
-        }
-        else
-        {
-            currentFrame = 0;
-        }
-
-        if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_UP))
-        {
-            if (!prevButtonState)
+            else
             {
-                prevButtonState = true;
-                if (jump > 0)
-                {
-                    if (jump == 2) velocity.y = firstJumpPower;
-                    else velocity.y = secondJumpPower;
-                    onPlatform = false;
-                    onHalfPlatform = false;
-                    jump--;
-                }
+                prevButtonState = false;
+            }
+
+            if (onHalfPlatform && InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_S))
+            {
+                onPlatform = false;
+                onHalfPlatform = false;
+                jump = 1;
+                position.y += 1;
+                oldY += 1;
+            }
+
+            if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_LSHIFT))
+            {
+                gun.Shot();
             }
         }
-        else
+        else if (tag == "2P")
         {
-            prevButtonState = false;
-        }
+            if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_RIGHT))
+            {
+                currentFrame = int(((SDL_GetTicks() / 100) % 2));
+                direction = 1.0f;
+            }
+            else if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_LEFT))
+            {
+                currentFrame = int(((SDL_GetTicks() / 100) % 2));
+                direction = -1.0f;
+            }
+            else
+            {
+                currentFrame = 0;
+            }
 
-        if (onHalfPlatform && InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_DOWN))
-        {
-            onPlatform = false;
-            onHalfPlatform = false;
-            jump = 1;
-            position.y += 1;
-            oldY += 1;
-        }
+            if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_UP))
+            {
+                if (!prevButtonState)
+                {
+                    prevButtonState = true;
+                    if (jump > 0)
+                    {
+                        if (jump == 2) velocity.y = firstJumpPower;
+                        else velocity.y = secondJumpPower;
+                        onPlatform = false;
+                        onHalfPlatform = false;
+                        jump--;
+                    }
+                }
+            }
+            else
+            {
+                prevButtonState = false;
+            }
 
-        if (onHalfPlatform && InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_RSHIFT))
-        {
-            gun.Shot();
+            if (onHalfPlatform && InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_DOWN))
+            {
+                onPlatform = false;
+                onHalfPlatform = false;
+                jump = 1;
+                position.y += 1;
+                oldY += 1;
+            }
+
+            if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_RSHIFT))
+            {
+                gun.Shot();
+            }
         }
     }
 

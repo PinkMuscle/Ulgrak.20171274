@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Platform.h"
 #include "GunGenerator.h"
+#include "Bullet.h"
 //Standard
 #include <iostream>
 #include <algorithm>
@@ -148,11 +149,19 @@ bool PlayState::OnEnter()
     {
         return false;
     }
+    if (!TextureManager::Instance()->Load("Assets/bullet.png", "bullet"))
+    {
+        return false;
+    }
+    if (!TextureManager::Instance()->Load("Assets/bullet_purple.png", "bullet_purple"))
+    {
+        return false;
+    }
 
     background = std::make_unique<Background>(LoaderParams(-1296 + 256, -810, 1728, 1080, 1.5f, "background"));
 
-    players.emplace_back(std::make_unique<Player>(LoaderParams(100, 20, 32, 32, "player1", "1P"), platforms));
-    players.emplace_back(std::make_unique<Player>(LoaderParams(400, 20, 32, 32, "player2", "2P"), platforms));
+    players.emplace_back(std::make_unique<Player>(LoaderParams(100, 20, 32, 32, "player1", "1P"), platforms, projectiles));
+    players.emplace_back(std::make_unique<Player>(LoaderParams(400, 20, 32, 32, "player2", "2P"), platforms, projectiles));
 
     //1Ãþ ÇÃ·§Æû
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(0, 100, 32, 8, 4, "platform")));
@@ -194,6 +203,8 @@ bool PlayState::OnExit()
     TextureManager::Instance()->ClearFromTextureMap("gungenerator");
     TextureManager::Instance()->ClearFromTextureMap("gun0");
     TextureManager::Instance()->ClearFromTextureMap("gun1");
+    TextureManager::Instance()->ClearFromTextureMap("bullet");
+    TextureManager::Instance()->ClearFromTextureMap("bullet_purple");
 
     std::cout << "exiting PlayState\n";
 
@@ -219,6 +230,18 @@ void PlayState::CheckCollision()
         {
             if (Collision::AABB(p.get(), proj.get()))
             {
+                if (p->GetTag() != proj->GetTag())
+                {
+                    if (proj->GetVelocity().x > 0)
+                    {
+                        dynamic_cast<Player*>(p.get())->Damaged(dynamic_cast<Bullet*>(proj.get())->GetDamage());
+                    }
+                    else
+                    {
+                        dynamic_cast<Player*>(p.get())->Damaged(dynamic_cast<Bullet*>(proj.get())->GetDamage() * -1);
+                    }
+                    proj->Destroy();
+                }
             }
         }
     }
