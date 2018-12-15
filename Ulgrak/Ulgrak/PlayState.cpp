@@ -140,6 +140,14 @@ bool PlayState::OnEnter()
     {
         return false;
     }
+    if (!TextureManager::Instance()->Load("Assets/gun0.png", "gun0"))
+    {
+        return false;
+    }
+    if (!TextureManager::Instance()->Load("Assets/gun1.png", "gun1"))
+    {
+        return false;
+    }
 
     background = std::make_unique<Background>(LoaderParams(-1296 + 256, -810, 1728, 1080, 1.5f, "background"));
 
@@ -184,6 +192,8 @@ bool PlayState::OnExit()
     TextureManager::Instance()->ClearFromTextureMap("platform");
     TextureManager::Instance()->ClearFromTextureMap("halfplatform");
     TextureManager::Instance()->ClearFromTextureMap("gungenerator");
+    TextureManager::Instance()->ClearFromTextureMap("gun0");
+    TextureManager::Instance()->ClearFromTextureMap("gun1");
 
     std::cout << "exiting PlayState\n";
 
@@ -192,31 +202,26 @@ bool PlayState::OnExit()
 
 void PlayState::CheckCollision()
 {
-    //for (auto& e : enemies)
-    //{
-    //    if (Collision::AABB(e.get(), player.get()))
-    //    {
-    //        e->Destroy();
-    //        player->Destroy();
-    //        Game::Instance()->GetStateMachine()->ChangeState(GameOverState::Instance());
-    //        return;
-    //    }
-    //    for (auto& a : animals)
-    //    {
-    //        if (Collision::AABB(e.get(), a.get()))
-    //        {
-    //            auto ani = dynamic_cast<Animal*>(a.get());
-    //            auto ene = dynamic_cast<Enemy*>(e.get());
-    //            if (ani->GetState() == FREE && ene->GetState() == HUNT)
-    //            {
-    //                ani->HuntedBy(ene);
-    //                ene->SetStateRun();
-    //                ene->SetAnimal(ani);
-    //                break;
-    //            }
-    //        }
-    //    }
-    //}
+    for (auto& p : players)
+    {
+        for (auto& i : items)
+        {
+            if (Collision::AABB(p.get(), i.get()))
+            {
+                if (i->IsActive())
+                {
+                    dynamic_cast<Player*>(p.get())->ChangeGun(i->GetTag());
+                    i->Destroy();
+                }
+            }
+        }
+        for (auto& proj : projectiles)
+        {
+            if (Collision::AABB(p.get(), proj.get()))
+            {
+            }
+        }
+    }
 }
 
 void PlayState::Refresh()

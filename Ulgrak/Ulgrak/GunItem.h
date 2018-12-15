@@ -8,6 +8,9 @@ public:
     GunItem(const LoaderParams& pParams);
     virtual void Draw();
     virtual void Update();
+
+private:
+    Uint32 destoryTime;
 };
 
 #endif

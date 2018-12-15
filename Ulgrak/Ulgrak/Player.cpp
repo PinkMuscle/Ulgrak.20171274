@@ -8,7 +8,7 @@ constexpr float firstJumpPower = -3.0f;
 constexpr float secondJumpPower = -3.6f;
 constexpr float gravity = 0.07f;
 
-Player::Player(const LoaderParams& pParams, std::vector<std::unique_ptr<GameObject>>& platforms_) : GameObject(pParams), platforms(platforms_)
+Player::Player(const LoaderParams& pParams, std::vector<std::unique_ptr<GameObject>>& platforms_) : GameObject(pParams), platforms(platforms_), gun(pParams, *this)
 {
     oldY = position.y;
 }
@@ -16,6 +16,7 @@ Player::Player(const LoaderParams& pParams, std::vector<std::unique_ptr<GameObje
 void Player::Draw()
 {
     GameObject::Draw();
+    gun.Draw();
 }
 
 void Player::Update()
@@ -114,6 +115,13 @@ void Player::Update()
     }
 
     oldY = position.y;
+
+    gun.Update();
+}
+
+void Player::ChangeGun(std::string tag)
+{
+    gun.Change(tag);
 }
 
 void Player::HandleInput()
@@ -165,6 +173,11 @@ void Player::HandleInput()
             position.y += 1;
             oldY += 1;
         }
+
+        if (onHalfPlatform && InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_LSHIFT))
+        {
+            gun.Shot();
+        }
     }
     else if (tag == "2P")
     {
@@ -210,6 +223,11 @@ void Player::HandleInput()
             jump = 1;
             position.y += 1;
             oldY += 1;
+        }
+
+        if (onHalfPlatform && InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_RSHIFT))
+        {
+            gun.Shot();
         }
     }
 

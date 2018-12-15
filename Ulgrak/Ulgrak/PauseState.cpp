@@ -30,10 +30,6 @@ bool PauseState::OnEnter()
 
 bool PauseState::OnExit()
 {
-    for (std::vector<GameObject*>::size_type i = 0; i < gameObjects.size(); i++)
-    {
-        gameObjects[i]->Clean();
-    }
     gameObjects.clear();
     TextureManager::Instance()->ClearFromTextureMap("resumebutton");
     TextureManager::Instance()->ClearFromTextureMap("mainbutton");

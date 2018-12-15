@@ -29,10 +29,6 @@ bool MenuState::OnEnter()
 
 bool MenuState::OnExit()
 {
-    for (std::vector<GameObject*>::size_type i = 0; i < gameObjects.size(); i++)
-    {
-        gameObjects[i]->Clean();
-    }
     gameObjects.clear();
     TextureManager::Instance()->ClearFromTextureMap("playbutton");
     TextureManager::Instance()->ClearFromTextureMap("exitbutton");

@@ -18,8 +18,9 @@ public:
     int GetWidth() const { return width; }
     int GetHeight() const { return height; }
     float GetScale() const { return scale; }
-    bool IsActive() const { return active; }
     std::string GetTag() const { return tag; }
+    SDL_RendererFlip GetFlip() const { return flip; }
+    bool IsActive() const { return active; }
 
 protected:
     Vector2D position;

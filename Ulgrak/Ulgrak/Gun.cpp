@@ -1,15 +1,51 @@
 #include "Gun.h"
 
-Gun::Gun(const LoaderParams& pParams) : GameObject(pParams)
+Gun::Gun(const LoaderParams& pParams, GameObject& player_) : GameObject(pParams), player(player_)
 {
+    Change("G0");
 }
 
 void Gun::Update()
 {
-
+    flip = player.GetFlip();
+    if (flip == SDL_FLIP_NONE)
+    {
+        position = player.GetPosition() + Vector2D(27, 12);
+    }
+    else
+    {
+        position = player.GetPosition() + Vector2D(5.0f - width, 12);
+    }
 }
 
 void Gun::Draw()
 {
     GameObject::Draw();
+}
+
+void Gun::Change(std::string tag)
+{
+    this->tag = tag;
+
+    if (tag == "G0")
+    {
+        textureID = "gun0";
+        width = 10;
+        height = 11;
+        magazine = -1;
+        fireRate = 300;
+    }
+    else if (tag == "G1")
+    {
+        textureID = "gun1";
+        width = 19;
+        height = 11;
+        magazine = 10;
+        fireRate = 600;
+    }
+}
+
+void Gun::Shot()
+{
+
 }
