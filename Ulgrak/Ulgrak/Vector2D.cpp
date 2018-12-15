@@ -61,12 +61,28 @@ float Vector2D::Length() const
 
 Vector2D& Vector2D::Normalize()
 {
-    return *this /= Length();
+    float len = Length();
+    if (len == 0.0f)
+    {
+        return *this;
+    }
+    else
+    {
+        return *this /= len;
+    }
 }
 
 Vector2D Vector2D::Normalized() const
 {
-    return *this / Length();
+    float len = Length();
+    if (len == 0.0f)
+    {
+        return *this;
+    }
+    else
+    {
+        return *this / len;
+    }
 }
 
 Vector2D& Vector2D::Zero()

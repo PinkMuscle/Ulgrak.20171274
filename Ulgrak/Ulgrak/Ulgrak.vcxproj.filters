@@ -10,49 +10,100 @@
     <ClInclude Include="TrasformComponent.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="AnimatedGraphic.h" />
-    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GameOverState.h" />
-    <ClInclude Include="GameState.h" />
-    <ClInclude Include="GameStateMachine.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="LoaderParams.h" />
-    <ClInclude Include="MenuButton.h" />
-    <ClInclude Include="MenuState.h" />
-    <ClInclude Include="PauseState.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayState.h" />
-    <ClInclude Include="SDLGameObject.h" />
-    <ClInclude Include="States.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Vector2D.h" />
+    <ClInclude Include="GameOverState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateMachine.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuButton.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="UIBox.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="States.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="GameObjects">
-      <UniqueIdentifier>{b2cb4726-2f1f-452c-8238-93a6ebec1d35}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ECS">
       <UniqueIdentifier>{eabd9252-4d2e-45cb-9344-6c9d51ab52a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{a0263e5b-d2c0-4d8c-a45f-e0919eb0227b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{d19c6434-c8c1-44f1-be1c-1e15a1ed2018}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AnimatedGraphic.cpp" />
-    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameOverState.cpp" />
-    <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="GameStateMachine.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MenuButton.cpp" />
-    <ClCompile Include="MenuState.cpp" />
-    <ClCompile Include="PauseState.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayState.cpp" />
-    <ClCompile Include="SDLGameObject.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Vector2D.cpp" />
+    <ClCompile Include="GameOverState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateMachine.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuButton.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="UIBox.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

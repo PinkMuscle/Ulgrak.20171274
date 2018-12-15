@@ -2,7 +2,6 @@
 #define Game_h
 #include <SDL.h>
 #include <vector>
-#include "GameObject.h"
 #include "GameStateMachine.h"
 
 class Game
@@ -36,7 +35,6 @@ private:
 	SDL_Renderer* pRenderer;
 	bool running;
 
-    std::vector<GameObject*> gameObjects;
     GameStateMachine* pGameStateMachine;
 };
 

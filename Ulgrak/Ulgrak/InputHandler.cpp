@@ -1,5 +1,6 @@
 #include "InputHandler.h"
 #include "Game.h"
+#include "Camera.h"
 
 InputHandler* InputHandler::pInstance = nullptr;
 
@@ -35,6 +36,16 @@ bool InputHandler::IsKeyDown(SDL_Scancode key) const
 	return false;
 }
 
+Vector2D InputHandler::GetMousePosition() const
+{
+    return mousePosition;
+}
+
+Vector2D InputHandler::GetMousePositionOnCamera() const
+{
+    return mousePosition + Vector2D(Camera::Instance()->GetX(), 0);
+}
+
 void InputHandler::Update()
 {
 	SDL_Event event;
@@ -68,8 +79,8 @@ void InputHandler::Update()
 
 void InputHandler::OnMouseMove(const SDL_Event& event)
 {
-	mousePosition.SetX(float(event.motion.x));
-	mousePosition.SetY(float(event.motion.y));
+	mousePosition.x = float(event.motion.x);
+	mousePosition.y = float(event.motion.y);
 }
 
 void InputHandler::OnMouseButtonDown(const SDL_Event& event)

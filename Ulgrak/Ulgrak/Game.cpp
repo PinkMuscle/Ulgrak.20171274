@@ -1,9 +1,6 @@
 #include "Game.h"
-#include "TextureManager.h"
-#include "LoaderParams.h"
 #include "InputHandler.h"
 #include "MenuState.h"
-#include "PlayState.h"
 #include <SDL_image.h>
 #include <iostream>
 
@@ -29,7 +26,8 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
             pRenderer = SDL_CreateRenderer(pWindow, -1, 0);
         }
 
-        SDL_SetRenderDrawColor(pRenderer, 0, 40, 60, 255);
+        SDL_RenderSetLogicalSize(pRenderer, 864, 540);
+        SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
 
         pGameStateMachine = new GameStateMachine();
         pGameStateMachine->ChangeState(MenuState::Instance());
@@ -57,13 +55,13 @@ void Game::Update()
 
 void Game::Quit()
 {
-	running = false;
+    running = false;
 }
 
 void Game::Clean()
 {
     std::cout << "cleaning game\n";
-	InputHandler::Instance()->Clean();
+    InputHandler::Instance()->Clean();
     SDL_DestroyWindow(pWindow);
     SDL_DestroyRenderer(pRenderer);
     SDL_Quit();
@@ -71,10 +69,5 @@ void Game::Clean()
 
 void Game::HandleEvents()
 {
-	InputHandler::Instance()->Update();
-    if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_RETURN))
-    {
-        pGameStateMachine->ChangeState(PlayState::Instance());
-    }
-
+    InputHandler::Instance()->Update();
 }

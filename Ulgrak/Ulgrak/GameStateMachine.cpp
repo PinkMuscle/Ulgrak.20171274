@@ -1,13 +1,16 @@
 #include "GameStateMachine.h"
+#include "Camera.h"
 
 void GameStateMachine::ChangeState(GameState *pState)
 {
-    if (pState != NULL)
+    if (pState != nullptr)
     {
-        if (currentState != NULL)
+        if (currentState != nullptr)
         {
             prevState = currentState;
             currentState->OnExit();
+
+            Camera::Instance()->SetX(0);
         }
         currentState = pState;
         currentState->OnEnter();
@@ -21,12 +24,12 @@ void GameStateMachine::PopState()
 
 void GameStateMachine::Update()
 {
-    if (currentState != NULL)
+    if (currentState != nullptr)
         currentState->Update();
 }
 
 void GameStateMachine::Render()
 {
-    if (currentState != NULL)
+    if (currentState != nullptr)
         currentState->Render();
 }

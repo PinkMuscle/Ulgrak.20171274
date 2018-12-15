@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "TextureManager.h"
 #include "MenuButton.h"
-#include "PlayState.h"
+//#include "PlayState.h"
 #include <iostream>
 
 MenuState* MenuState::pInstance = nullptr;
@@ -10,18 +10,18 @@ const std::string MenuState::menuID = "MENU";
 
 bool MenuState::OnEnter()
 {
-    if (!TextureManager::Instance()->Load("../assets/button.png", "playbutton", Game::Instance()->GetRenderer()))
+    if (!TextureManager::Instance()->Load("Assets/button.png", "playbutton"))
     {
         return false;
     }
-    if (!TextureManager::Instance()->Load("../assets/exit.png", "exitbutton", Game::Instance()->GetRenderer()))
+    if (!TextureManager::Instance()->Load("Assets/exit.png", "exitbutton"))
     {
         return false;
     }
-    GameObject* button1 = new MenuButton(new LoaderParams(100, 100, 400, 100, "playbutton"), MenuToPlay);
-    GameObject* button2 = new MenuButton(new LoaderParams(100, 300, 400, 100, "exitbutton"), ExitFromMenu);
-    gameObjects.push_back(button1);
-    gameObjects.push_back(button2);
+
+    gameObjects.emplace_back(std::make_unique<MenuButton>(LoaderParams(450, 180, 400, 100, 0.7f, "playbutton"), MenuToPlay));
+    gameObjects.emplace_back(std::make_unique<MenuButton>(LoaderParams(450, 300, 400, 100, 0.7f, "exitbutton"), ExitFromMenu));
+
     std::cout << "entering MenuState\n";
 
     return true;
@@ -43,7 +43,7 @@ bool MenuState::OnExit()
 
 void MenuState::MenuToPlay()
 {
-    Game::Instance()->GetStateMachine()->ChangeState(PlayState::Instance());
+    //Game::Instance()->GetStateMachine()->ChangeState(PlayState::Instance());
 }
 
 void MenuState::ExitFromMenu()

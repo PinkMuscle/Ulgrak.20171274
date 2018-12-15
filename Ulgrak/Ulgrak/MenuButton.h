@@ -1,6 +1,6 @@
 #ifndef MenuButton_h
 #define MenuButton_h
-#include "SDLGameObject.h"
+#include "GameObject.h"
 
 enum button_state
 {
@@ -9,10 +9,10 @@ enum button_state
     CLICKED = 2
 };
 
-class MenuButton : public SDLGameObject
+class MenuButton : public GameObject
 {
 public:
-    MenuButton(const LoaderParams* pParams, void (*callback)());
+    MenuButton(const LoaderParams& pParams, void (*callback)());
     virtual void Draw();
     virtual void Update();
     virtual void Clean();

@@ -31,10 +31,8 @@ public:
 	{
 		return mouseButtonStates[buttonNumber];
 	}
-	Vector2D GetMousePosition() const
-	{
-		return mousePosition;
-	}
+    Vector2D GetMousePosition() const;
+    Vector2D GetMousePositionOnCamera() const;
 
 private:
 	InputHandler();

@@ -120,12 +120,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AnimatedGraphic.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="Components.h" />
     <ClInclude Include="ECS.h" />
-    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameOverState.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateMachine.h" />
@@ -136,15 +136,16 @@
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayState.h" />
-    <ClInclude Include="SDLGameObject.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="States.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="TrasformComponent.h" />
+    <ClInclude Include="UIBox.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AnimatedGraphic.cpp" />
-    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="GameState.cpp" />
@@ -156,8 +157,9 @@
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayState.cpp" />
-    <ClCompile Include="SDLGameObject.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="UIBox.cpp" />
     <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

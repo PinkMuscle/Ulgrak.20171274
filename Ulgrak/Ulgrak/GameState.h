@@ -2,6 +2,7 @@
 #define GameState_h
 #include <string>
 #include <vector>
+#include <memory>
 #include "GameObject.h"
 
 class GameState
@@ -13,7 +14,7 @@ public:
     virtual bool OnExit() = 0;
     virtual std::string GetStateID() const = 0;
 protected:
-    std::vector<GameObject*> gameObjects;
+    std::vector<std::unique_ptr<GameObject>> gameObjects;
 };
 
 #endif

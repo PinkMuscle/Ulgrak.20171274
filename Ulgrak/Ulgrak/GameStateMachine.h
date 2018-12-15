@@ -7,16 +7,15 @@ class GameStateMachine
 {
 public:
     void ChangeState(GameState* pState);
-    void PushState(GameState* pState);
     void PopState();
+	GameState* GetCurrentState() { return currentState; }
 
     virtual void Update();
     virtual void Render();
 
 private:
-    GameState* currentState;
-    GameState* prevState;
-    std::vector<GameState*> gameStates;
+    GameState* currentState = nullptr;
+    GameState* prevState = nullptr;
 };
 
 #endif

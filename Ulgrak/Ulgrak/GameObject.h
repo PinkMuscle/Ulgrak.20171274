@@ -1,18 +1,39 @@
-#ifndef GameObject_h
-#define GameObject_h
-
-class LoaderParams;
+#ifndef SDLGameObject_h
+#define SDLGameObject_h
+#include "Vector2D.h"
+#include "LoaderParams.h"
+#include <SDL.h>
+#include <string>
 
 class GameObject
 {
 public:
-    virtual void Draw() = 0;
-    virtual void Update() = 0;
-    virtual void Clean() = 0;
+    GameObject(const LoaderParams& pParams);
+    virtual void Draw();
+    virtual void Update();
+    virtual void Clean();
+    virtual void Destroy() { active = false; }
+
+    Vector2D GetPosition() const { return position; }
+    int GetWidth() const { return width; }
+    int GetHeight() const { return height; }
+    float GetScale() const { return scale; }
+    bool IsActive() const { return active; }
 
 protected:
-    GameObject(const LoaderParams* pParams) {}
-    virtual ~GameObject() {}
+    Vector2D position;
+    Vector2D velocity;
+    Vector2D acceleration;
+    int width;
+    int height;
+    int currentFrame;
+    int currentRow;
+    float scale;
+    std::string textureID;
+
+private:
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    bool active = true;
 };
 
 #endif
