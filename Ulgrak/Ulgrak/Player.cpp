@@ -21,6 +21,7 @@ void Player::Draw()
 
 void Player::Update()
 {
+    //아래가 비었는지 체크
     if (onPlatform)
     {
         position.y += 1;
@@ -56,65 +57,18 @@ void Player::Update()
         position.y -= 1;
     }
 
-
     HandleInput();
     if (!onPlatform)
     {
         velocity.y += gravity;
     }
 
+    CheckCollision();
 
-    //포지션 변경하면서 충돌 체크
-    position.x += velocity.x;
-    for (auto& platform : platforms)
+    if (position.y > 1200)
     {
-        if (platform->GetTag() != "HALF" && Collision::AABB(this, platform.get()))
-        {
-            if (velocity.x > 0)
-            {
-                position.x = platform->GetPosition().x - width * scale;
-            }
-            else
-            {
-                position.x = platform->GetPosition().x + platform->GetWidth() * platform->GetScale();
-            }
-            velocity.x = 0;
-        }
+        Die();
     }
-
-    position.y += velocity.y;
-    for (auto& platform : platforms)
-    {
-        if (Collision::AABB(this, platform.get()))
-        {
-            if (platform->GetTag() == "HALF")
-            {
-                if (oldY + height * scale <= platform->GetPosition().y)
-                {
-                    position.y = platform->GetPosition().y - height * scale;
-                    onPlatform = true;
-                    jump = 2;
-                    velocity.y = 0;
-                }
-            }
-            else
-            {
-                if (velocity.y > 0)
-                {
-                    position.y = platform->GetPosition().y - height * scale;
-                    onPlatform = true;
-                    jump = 2;
-                }
-                else
-                {
-                    position.y = platform->GetPosition().y + platform->GetHeight() * platform->GetScale();
-                }
-                velocity.y = 0;
-            }
-        }
-    }
-
-    oldY = position.y;
 
     gun.Update();
 }
@@ -242,4 +196,72 @@ void Player::HandleInput()
 
     velocity.x += direction * speed;
     velocity.x *= 0.92f;
+}
+
+void Player::CheckCollision()
+{
+    position.x += velocity.x;
+    for (auto& platform : platforms)
+    {
+        if (platform->GetTag() != "HALF" && Collision::AABB(this, platform.get()))
+        {
+            if (velocity.x > 0)
+            {
+                position.x = platform->GetPosition().x - width * scale;
+            }
+            else
+            {
+                position.x = platform->GetPosition().x + platform->GetWidth() * platform->GetScale();
+            }
+            velocity.x = 0;
+        }
+    }
+
+    position.y += velocity.y;
+    for (auto& platform : platforms)
+    {
+        if (Collision::AABB(this, platform.get()))
+        {
+            if (platform->GetTag() == "HALF")
+            {
+                if (oldY + height * scale <= platform->GetPosition().y)
+                {
+                    position.y = platform->GetPosition().y - height * scale;
+                    onPlatform = true;
+                    jump = 2;
+                    velocity.y = 0;
+                }
+            }
+            else
+            {
+                if (velocity.y > 0)
+                {
+                    position.y = platform->GetPosition().y - height * scale;
+                    onPlatform = true;
+                    jump = 2;
+                }
+                else
+                {
+                    position.y = platform->GetPosition().y + platform->GetHeight() * platform->GetScale();
+                }
+                velocity.y = 0;
+            }
+        }
+    }
+
+    oldY = position.y;
+}
+
+void Player::Die()
+{
+    life--;
+
+    if (life == 0)
+    {
+        Destroy();
+        return;
+    }
+
+    position = Vector2D(240, -32);
+    velocity.Zero();
 }

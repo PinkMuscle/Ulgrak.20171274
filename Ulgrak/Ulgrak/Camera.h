@@ -16,6 +16,7 @@ public:
         return pInstance;
     }
     void Update(const std::vector<std::unique_ptr<GameObject>>& players);
+    void Init();
     int GetXOnCamera(const float& objX) const;
     int GetYOnCamera(const float& objY) const;
     float GetScale() const { return objScale; }
@@ -28,6 +29,11 @@ private:
     float rightX;
     float upY;
     float downY;
+
+    float oldLeftX;
+    float oldRightX;
+    float oldUpY;
+
     float objScale;
 };
 

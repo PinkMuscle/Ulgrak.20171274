@@ -160,8 +160,8 @@ bool PlayState::OnEnter()
 
     background = std::make_unique<Background>(LoaderParams(-1296 + 256, -810, 1728, 1080, 1.5f, "background"));
 
-    players.emplace_back(std::make_unique<Player>(LoaderParams(100, 20, 32, 32, "player1", "1P"), platforms, projectiles));
-    players.emplace_back(std::make_unique<Player>(LoaderParams(400, 20, 32, 32, "player2", "2P"), platforms, projectiles));
+    players.emplace_back(std::make_unique<Player>(LoaderParams(100, 20 - 128, 32, 32, "player1", "1P"), platforms, projectiles));
+    players.emplace_back(std::make_unique<Player>(LoaderParams(400, 20 - 128, 32, 32, "player2", "2P"), platforms, projectiles));
 
     //1Ãþ ÇÃ·§Æû
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(0, 100, 32, 8, 4, "platform")));
@@ -178,6 +178,7 @@ bool PlayState::OnEnter()
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(384, 100 - 256, 32, 8, 4, "platform")));
 
     nextSpawn = SDL_GetTicks() + spawnDelay;
+    Camera::Instance()->Init();
 
     std::cout << "entering PlayState\n";
 

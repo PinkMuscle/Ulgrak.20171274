@@ -17,6 +17,8 @@ public:
 
 private:
 	void HandleInput();
+    void CheckCollision();
+    void Die();
 
     std::vector<std::unique_ptr<GameObject>>& platforms;
     Gun gun;
