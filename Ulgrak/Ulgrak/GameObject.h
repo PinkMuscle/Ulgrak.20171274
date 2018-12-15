@@ -11,7 +11,6 @@ public:
     GameObject(const LoaderParams& pParams);
     virtual void Draw();
     virtual void Update();
-    virtual void Clean();
     virtual void Destroy() { active = false; }
 
     Vector2D GetPosition() const { return position; }
@@ -32,9 +31,9 @@ protected:
     float scale;
     std::string textureID;
     std::string tag;
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
 
 private:
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
     bool active = true;
 };
 

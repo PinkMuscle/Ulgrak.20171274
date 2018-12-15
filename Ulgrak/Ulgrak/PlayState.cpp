@@ -10,12 +10,15 @@
 #include "Background.h"
 #include "Player.h"
 #include "Platform.h"
+#include "GunGenerator.h"
 //Standard
 #include <iostream>
 #include <algorithm>
 
 PlayState* PlayState::pInstance = nullptr;
 const std::string PlayState::playID = "PLAY";
+
+constexpr Uint32 spawnDelay = 8000u;
 
 void PlayState::Update()
 {
@@ -24,13 +27,44 @@ void PlayState::Update()
         Game::Instance()->GetStateMachine()->ChangeState(PauseState::Instance());
         return;
     }
+    if (SDL_GetTicks() > nextSpawn)
+    {
+        nextSpawn = SDL_GetTicks() + spawnDelay;
+
+        int random = rand() % 4;
+        switch (random)
+        {
+        case 0:
+            effects.emplace_back(std::make_unique<GunGenerator>(LoaderParams(32, 20, 32, 32, 2, "gungenerator"), items));
+            break;
+        case 1:
+            effects.emplace_back(std::make_unique<GunGenerator>(LoaderParams(32 + 384, 20, 32, 32, 2, "gungenerator"), items));
+            break;
+        case 2:
+            effects.emplace_back(std::make_unique<GunGenerator>(LoaderParams(32, 20 - 256, 32, 32, 2, "gungenerator"), items));
+            break;
+        case 3:
+            effects.emplace_back(std::make_unique<GunGenerator>(LoaderParams(32 + 384, 20 - 256, 32, 32, 2, "gungenerator"), items));
+            break;
+        default:
+            break;
+        }
+    }
 
     background->Update();
     for (auto& objects : players)
     {
         objects->Update();
     }
+    for (auto& objects : items)
+    {
+        objects->Update();
+    }
     for (auto& objects : projectiles)
+    {
+        objects->Update();
+    }
+    for (auto& objects : effects)
     {
         objects->Update();
     }
@@ -55,7 +89,15 @@ void PlayState::Render()
     {
         objects->Draw();
     }
+    for (auto& objects : items)
+    {
+        objects->Draw();
+    }
     for (auto& objects : projectiles)
+    {
+        objects->Draw();
+    }
+    for (auto& objects : effects)
     {
         objects->Draw();
     }
@@ -82,11 +124,19 @@ bool PlayState::OnEnter()
     {
         return false;
     }
+    if (!TextureManager::Instance()->Load("Assets/player3.png", "player3"))
+    {
+        return false;
+    }
     if (!TextureManager::Instance()->Load("Assets/platform.png", "platform"))
     {
         return false;
     }
     if (!TextureManager::Instance()->Load("Assets/halfplatform.png", "halfplatform"))
+    {
+        return false;
+    }
+    if (!TextureManager::Instance()->Load("Assets/gungenerator.png", "gungenerator"))
     {
         return false;
     }
@@ -110,6 +160,8 @@ bool PlayState::OnEnter()
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(256, 100 - 256, 31, 4, 4, "halfplatform", "HALF")));
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(384, 100 - 256, 32, 8, 4, "platform")));
 
+    nextSpawn = SDL_GetTicks() + spawnDelay;
+
     std::cout << "entering PlayState\n";
 
     return true;
@@ -120,14 +172,18 @@ bool PlayState::OnExit()
     background.reset();
     platforms.clear();
     players.clear();
+    items.clear();
     projectiles.clear();
+    effects.clear();
     ui.clear();
 
     TextureManager::Instance()->ClearFromTextureMap("background");
     TextureManager::Instance()->ClearFromTextureMap("player1");
     TextureManager::Instance()->ClearFromTextureMap("player2");
+    TextureManager::Instance()->ClearFromTextureMap("player3");
     TextureManager::Instance()->ClearFromTextureMap("platform");
     TextureManager::Instance()->ClearFromTextureMap("halfplatform");
+    TextureManager::Instance()->ClearFromTextureMap("gungenerator");
 
     std::cout << "exiting PlayState\n";
 
@@ -136,36 +192,6 @@ bool PlayState::OnExit()
 
 void PlayState::CheckCollision()
 {
-    //for (auto& player : players)
-    //{
-    //    for (auto& platform : platforms)
-    //    {
-    //        if (Collision::AABB(player.get(), platform.get()))
-    //        {
-    //            Vector2D playerPos = player->GetPosition();
-    //            Vector2D platformPos = platform->GetPosition();
-    //            Vector2D reboundDir = (player->GetVelocity() * (-1)).Normalized();
-    //            Vector2D edge = platformPos;
-
-    //            if (reboundDir.x > 0)
-    //            {
-    //                edge.x += platform->GetWidth();
-    //            }
-    //            if (reboundDir.y > 0)
-    //            {
-    //                edge.y += platform->GetHeight();
-    //            }
-
-    //            if ((edge.x - playerPos.x) / reboundDir.x < (edge.y - playerPos.y) / reboundDir.y)
-    //            {   
-
-    //            }
-
-    //            break;
-    //        }
-    //    }
-    //}
-
     //for (auto& e : enemies)
     //{
     //    if (Collision::AABB(e.get(), player.get()))
@@ -195,19 +221,24 @@ void PlayState::CheckCollision()
 
 void PlayState::Refresh()
 {
-    platforms.erase
-    (
-        std::remove_if(std::begin(platforms), std::end(platforms), [](const std::unique_ptr<GameObject> &object) {return !object->IsActive(); }),
-        std::end(platforms)
-    );
     players.erase
     (
         std::remove_if(std::begin(players), std::end(players), [](const std::unique_ptr<GameObject> &object) {return !object->IsActive(); }),
         std::end(players)
     );
+    items.erase
+    (
+        std::remove_if(std::begin(items), std::end(items), [](const std::unique_ptr<GameObject> &object) {return !object->IsActive(); }),
+        std::end(items)
+    );
     projectiles.erase
     (
         std::remove_if(std::begin(projectiles), std::end(projectiles), [](const std::unique_ptr<GameObject> &object) {return !object->IsActive(); }),
         std::end(projectiles)
+    );
+    effects.erase
+    (
+        std::remove_if(std::begin(effects), std::end(effects), [](const std::unique_ptr<GameObject> &object) {return !object->IsActive(); }),
+        std::end(effects)
     );
 }

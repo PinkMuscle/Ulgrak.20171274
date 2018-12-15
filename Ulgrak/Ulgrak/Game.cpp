@@ -3,6 +3,7 @@
 #include "MenuState.h"
 #include <SDL_image.h>
 #include <iostream>
+#include <ctime>
 
 Game* Game::pInstance = nullptr;
 
@@ -28,6 +29,8 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 
         SDL_RenderSetLogicalSize(pRenderer, 864, 540);
         SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
+
+        srand((unsigned int)time(NULL));
 
         pGameStateMachine = new GameStateMachine();
         pGameStateMachine->ChangeState(MenuState::Instance());

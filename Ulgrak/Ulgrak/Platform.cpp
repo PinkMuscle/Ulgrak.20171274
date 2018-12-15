@@ -13,8 +13,3 @@ void Platform::Draw()
 {
     GameObject::Draw();
 }
-
-void Platform::Clean()
-{
-    GameObject::Clean();
-}

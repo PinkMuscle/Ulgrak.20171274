@@ -13,8 +13,3 @@ void Background::Update()
 {
     currentFrame = int(((SDL_GetTicks() / 1000) % 2));
 }
-
-void Background::Clean()
-{
-    GameObject::Clean();
-}

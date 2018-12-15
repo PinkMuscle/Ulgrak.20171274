@@ -128,11 +128,13 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Components.h" />
     <ClInclude Include="ECS.h" />
-    <ClInclude Include="Explosion.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameOverState.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateMachine.h" />
+    <ClInclude Include="Gun.h" />
+    <ClInclude Include="GunGenerator.h" />
+    <ClInclude Include="GunItem.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="LoaderParams.h" />
     <ClInclude Include="MenuButton.h" />
@@ -151,11 +153,13 @@
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameStateMachine.cpp" />
+    <ClCompile Include="Gun.cpp" />
+    <ClCompile Include="GunGenerator.cpp" />
+    <ClCompile Include="GunItem.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuButton.cpp" />

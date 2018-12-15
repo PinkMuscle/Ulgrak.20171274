@@ -8,7 +8,6 @@ public:
     UIBox(const LoaderParams& pParams);
     virtual void Draw();
     virtual void Update();
-    virtual void Clean();
 };
 
 #endif

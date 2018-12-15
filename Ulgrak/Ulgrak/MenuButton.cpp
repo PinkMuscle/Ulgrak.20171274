@@ -34,8 +34,3 @@ void MenuButton::Update()
         currentFrame = MOUSE_OUT;
     }
 }
-
-void MenuButton::Clean()
-{
-    GameObject::Clean();
-}

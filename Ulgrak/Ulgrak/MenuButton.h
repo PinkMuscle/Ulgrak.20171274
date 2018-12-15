@@ -15,7 +15,6 @@ public:
     MenuButton(const LoaderParams& pParams, void (*callback)());
     virtual void Draw();
     virtual void Update();
-    virtual void Clean();
 
 private:
     bool released;

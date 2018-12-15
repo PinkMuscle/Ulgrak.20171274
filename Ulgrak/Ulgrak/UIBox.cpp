@@ -14,8 +14,3 @@ void UIBox::Update()
 {
 
 }
-
-void UIBox::Clean()
-{
-    GameObject::Clean();
-}

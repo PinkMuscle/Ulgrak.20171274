@@ -116,11 +116,6 @@ void Player::Update()
     oldY = position.y;
 }
 
-void Player::Clean()
-{
-    GameObject::Clean();
-}
-
 void Player::HandleInput()
 {
     float direction = 0.0f;

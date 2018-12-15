@@ -10,7 +10,6 @@ public:
     Player(const LoaderParams& pParams, std::vector<std::unique_ptr<GameObject>>& platforms_);
     virtual void Draw();
     virtual void Update();
-    virtual void Clean();
 
 private:
 	void HandleInput();
