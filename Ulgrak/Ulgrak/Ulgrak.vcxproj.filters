@@ -53,6 +53,9 @@
     <ClInclude Include="GameObject.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ECS">
@@ -103,6 +106,9 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>

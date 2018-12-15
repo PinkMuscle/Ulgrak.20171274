@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "TextureManager.h"
 #include "MenuButton.h"
-//#include "PlayState.h"
+#include "PlayState.h"
 #include <iostream>
 
 MenuState* MenuState::pInstance = nullptr;
@@ -43,7 +43,7 @@ bool MenuState::OnExit()
 
 void MenuState::MenuToPlay()
 {
-    //Game::Instance()->GetStateMachine()->ChangeState(PlayState::Instance());
+    Game::Instance()->GetStateMachine()->ChangeState(PlayState::Instance());
 }
 
 void MenuState::ExitFromMenu()

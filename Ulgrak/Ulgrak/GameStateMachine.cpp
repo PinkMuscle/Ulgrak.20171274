@@ -9,8 +9,6 @@ void GameStateMachine::ChangeState(GameState *pState)
         {
             prevState = currentState;
             currentState->OnExit();
-
-            Camera::Instance()->SetX(0);
         }
         currentState = pState;
         currentState->OnEnter();

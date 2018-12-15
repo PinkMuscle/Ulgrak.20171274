@@ -5,7 +5,7 @@
 class Player : public GameObject
 {
 public:
-    Player(const LoaderParams& pParams);
+    Player(const LoaderParams& pParams, int id);
     virtual void Draw();
     virtual void Update();
     virtual void Clean();
@@ -13,6 +13,7 @@ public:
 private:
 	void HandleInput();
 
+    int playerID;
     const float speed = 0.3f;
 };
 

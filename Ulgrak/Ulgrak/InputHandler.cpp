@@ -43,7 +43,8 @@ Vector2D InputHandler::GetMousePosition() const
 
 Vector2D InputHandler::GetMousePositionOnCamera() const
 {
-    return mousePosition + Vector2D(Camera::Instance()->GetX(), 0);
+    //return mousePosition + Vector2D(Camera::Instance()->GetX(), 0);
+    return mousePosition;
 }
 
 void InputHandler::Update()

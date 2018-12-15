@@ -1,6 +1,8 @@
 #ifndef Camera_h
 #define Camera_h
-
+#include <vector>
+#include <memory>
+#include "GameObject.h"
 class Camera
 {
 public:
@@ -13,14 +15,20 @@ public:
         }
         return pInstance;
     }
-    float GetX() const { return x; }
-    void SetX(float x) { this->x = x; }
-    void Follow(float dstX, float speed);
+    void Update(const std::vector<std::unique_ptr<GameObject>>& players);
+    int GetXOnCamera(const float& objX) const;
+    int GetYOnCamera(const float& objY) const;
+    float GetScale() const { return objScale; }
 
 private:
     Camera() {}
     static Camera* pInstance;
-    float x = 0;
+
+    float leftX;
+    float rightX;
+    float upY;
+    float downY;
+    float objScale;
 };
 
 #endif
