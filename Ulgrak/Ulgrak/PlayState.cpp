@@ -74,7 +74,11 @@ bool PlayState::OnEnter()
     {
         return false;
     }
-    if (!TextureManager::Instance()->Load("Assets/player.png", "player"))
+    if (!TextureManager::Instance()->Load("Assets/player1.png", "player1"))
+    {
+        return false;
+    }
+    if (!TextureManager::Instance()->Load("Assets/player2.png", "player2"))
     {
         return false;
     }
@@ -82,18 +86,29 @@ bool PlayState::OnEnter()
     {
         return false;
     }
+    if (!TextureManager::Instance()->Load("Assets/halfplatform.png", "halfplatform"))
+    {
+        return false;
+    }
 
     background = std::make_unique<Background>(LoaderParams(-1296 + 256, -810, 1728, 1080, 1.5f, "background"));
 
-    players.emplace_back(std::make_unique<Player>(LoaderParams(100, 20, 32, 32, "player"), platforms, 0));
-    players.emplace_back(std::make_unique<Player>(LoaderParams(400, 20, 32, 32, "player"), platforms, 1));
+    players.emplace_back(std::make_unique<Player>(LoaderParams(100, 20, 32, 32, "player1", "1P"), platforms));
+    players.emplace_back(std::make_unique<Player>(LoaderParams(400, 20, 32, 32, "player2", "2P"), platforms));
 
+    //1Ãþ ÇÃ·§Æû
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(0, 100, 32, 8, 4, "platform")));
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(128, 100, 32, 8, 4, "platform")));
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(256, 100, 32, 8, 4, "platform")));
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(384, 100, 32, 8, 4, "platform")));
-    platforms.emplace_back(std::make_unique<Platform>(LoaderParams(64, 100 - 128, 32, 8, 4, "platform")));
-    platforms.emplace_back(std::make_unique<Platform>(LoaderParams(320, 100 - 128, 32, 8, 4, "platform")));
+    //2Ãþ ÇÃ·§Æû
+    platforms.emplace_back(std::make_unique<Platform>(LoaderParams(64, 100 - 128, 31, 4, 4, "halfplatform", "HALF")));
+    platforms.emplace_back(std::make_unique<Platform>(LoaderParams(320, 100 - 128, 31, 4, 4, "halfplatform", "HALF")));
+    //3Ãþ ÇÃ·§Æû
+    platforms.emplace_back(std::make_unique<Platform>(LoaderParams(0, 100 - 256, 32, 8, 4, "platform")));
+    platforms.emplace_back(std::make_unique<Platform>(LoaderParams(128, 100 - 256, 31, 4, 4, "halfplatform", "HALF")));
+    platforms.emplace_back(std::make_unique<Platform>(LoaderParams(256, 100 - 256, 31, 4, 4, "halfplatform", "HALF")));
+    platforms.emplace_back(std::make_unique<Platform>(LoaderParams(384, 100 - 256, 32, 8, 4, "platform")));
 
     std::cout << "entering PlayState\n";
 
@@ -109,8 +124,10 @@ bool PlayState::OnExit()
     ui.clear();
 
     TextureManager::Instance()->ClearFromTextureMap("background");
-    TextureManager::Instance()->ClearFromTextureMap("player");
+    TextureManager::Instance()->ClearFromTextureMap("player1");
+    TextureManager::Instance()->ClearFromTextureMap("player2");
     TextureManager::Instance()->ClearFromTextureMap("platform");
+    TextureManager::Instance()->ClearFromTextureMap("halfplatform");
 
     std::cout << "exiting PlayState\n";
 

@@ -20,6 +20,7 @@ public:
     int GetHeight() const { return height; }
     float GetScale() const { return scale; }
     bool IsActive() const { return active; }
+    std::string GetTag() const { return tag; }
 
 protected:
     Vector2D position;
@@ -30,6 +31,7 @@ protected:
     int currentRow;
     float scale;
     std::string textureID;
+    std::string tag;
 
 private:
     SDL_RendererFlip flip = SDL_FLIP_NONE;

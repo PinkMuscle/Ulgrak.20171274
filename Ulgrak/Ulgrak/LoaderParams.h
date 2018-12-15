@@ -6,13 +6,16 @@ class LoaderParams
 {
 public:
     LoaderParams(int x, int y, int width, int height, std::string textureID) : x(x), y(y), width(width), height(height), textureID(textureID) {}
+    LoaderParams(int x, int y, int width, int height, std::string textureID, std::string tag) : x(x), y(y), width(width), height(height), textureID(textureID), tag(tag) {}
     LoaderParams(int x, int y, int width, int height, float scale, std::string textureID) : x(x), y(y), width(width), height(height), scale(scale), textureID(textureID) {}
+    LoaderParams(int x, int y, int width, int height, float scale, std::string textureID, std::string tag) : x(x), y(y), width(width), height(height), scale(scale), textureID(textureID), tag(tag) {}
     int GetX() const { return x; }
     int GetY() const { return y; }
     int GetWidth() const { return width; }
     int GetHeight() const { return height; }
     float GetScale() const { return scale; }
     std::string GetTextureID() const { return textureID; }
+    std::string GetTag() const { return tag; }
 
 private:
     int x;
@@ -21,6 +24,7 @@ private:
     int height;
     float scale = 1.0f;
     std::string textureID;
+    std::string tag = "NONE";
 };
 
 #endif

@@ -6,8 +6,9 @@ GameObject::GameObject(const LoaderParams& pParams) : position(float(pParams.Get
 {
     width = pParams.GetWidth();
     height = pParams.GetHeight();
-    textureID = pParams.GetTextureID();
     scale = pParams.GetScale();
+    textureID = pParams.GetTextureID();
+    tag = pParams.GetTag();
     currentRow = 0;
     currentFrame = 0;
 }

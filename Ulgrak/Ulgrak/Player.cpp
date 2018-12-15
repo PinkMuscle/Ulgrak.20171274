@@ -3,13 +3,14 @@
 #include "Collision.h"
 #include <iostream>
 
+constexpr float speed = 0.2f;
 constexpr float firstJumpPower = -3.0f;
 constexpr float secondJumpPower = -3.6f;
 constexpr float gravity = 0.07f;
 
-Player::Player(const LoaderParams& pParams, std::vector<std::unique_ptr<GameObject>>& platforms_, int id) : GameObject(pParams), platforms(platforms_)
+Player::Player(const LoaderParams& pParams, std::vector<std::unique_ptr<GameObject>>& platforms_) : GameObject(pParams), platforms(platforms_)
 {
-    playerID = id;
+    oldY = position.y;
 }
 
 void Player::Draw()
@@ -19,24 +20,37 @@ void Player::Draw()
 
 void Player::Update()
 {
-    currentFrame = int(((SDL_GetTicks() / 100) % 2));
-
     if (onPlatform)
     {
         position.y += 1;
 
-        onPlatform = [&]() ->bool
+        int platformCount = 0;
+        int halfCount = 0;
+        for (auto& platform : platforms)
         {
-            for (auto& platform : platforms)
+            if (Collision::AABB(this, platform.get()))
             {
-                if (Collision::AABB(this, platform.get()))
+                platformCount++;
+                if (platform->GetTag() == "HALF")
                 {
-                    return true;
+                    halfCount++;
                 }
             }
+        }
+        if (platformCount == 0)
+        {
+            onPlatform = false;
+            onHalfPlatform = false;
             jump = 1;
-            return false;
-        }();
+        }
+        else if (platformCount == halfCount)
+        {
+            onHalfPlatform = true;
+        }
+        else
+        {
+            onHalfPlatform = false;
+        }
 
         position.y -= 1;
     }
@@ -53,7 +67,7 @@ void Player::Update()
     position.x += velocity.x;
     for (auto& platform : platforms)
     {
-        if (Collision::AABB(this, platform.get()))
+        if (platform->GetTag() != "HALF" && Collision::AABB(this, platform.get()))
         {
             if (velocity.x > 0)
             {
@@ -72,19 +86,34 @@ void Player::Update()
     {
         if (Collision::AABB(this, platform.get()))
         {
-            if (velocity.y > 0)
+            if (platform->GetTag() == "HALF")
             {
-                position.y = platform->GetPosition().y - height * scale;
-                onPlatform = true;
-                jump = 2;
+                if (oldY + height * scale <= platform->GetPosition().y)
+                {
+                    position.y = platform->GetPosition().y - height * scale;
+                    onPlatform = true;
+                    jump = 2;
+                    velocity.y = 0;
+                }
             }
             else
             {
-                position.y = platform->GetPosition().y + platform->GetHeight() * platform->GetScale();
+                if (velocity.y > 0)
+                {
+                    position.y = platform->GetPosition().y - height * scale;
+                    onPlatform = true;
+                    jump = 2;
+                }
+                else
+                {
+                    position.y = platform->GetPosition().y + platform->GetHeight() * platform->GetScale();
+                }
+                velocity.y = 0;
             }
-            velocity.y = 0;
         }
     }
+
+    oldY = position.y;
 }
 
 void Player::Clean()
@@ -96,15 +125,21 @@ void Player::HandleInput()
 {
     float direction = 0.0f;
 
-    if (playerID == 0)
+    if (tag == "1P")
     {
         if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_D))
         {
+            currentFrame = int(((SDL_GetTicks() / 100) % 2));
             direction = 1.0f;
         }
         else if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_A))
         {
+            currentFrame = int(((SDL_GetTicks() / 100) % 2));
             direction = -1.0f;
+        }
+        else
+        {
+            currentFrame = 0;
         }
 
         if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_W))
@@ -117,6 +152,7 @@ void Player::HandleInput()
                     if (jump == 2) velocity.y = firstJumpPower;
                     else velocity.y = secondJumpPower;
                     onPlatform = false;
+                    onHalfPlatform = false;
                     jump--;
                 }
             }
@@ -125,16 +161,31 @@ void Player::HandleInput()
         {
             prevButtonState = false;
         }
+
+        if (onHalfPlatform && InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_S))
+        {
+            onPlatform = false;
+            onHalfPlatform = false;
+            jump = 1;
+            position.y += 1;
+            oldY += 1;
+        }
     }
-    else if (playerID == 1)
+    else if (tag == "2P")
     {
         if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_RIGHT))
         {
+            currentFrame = int(((SDL_GetTicks() / 100) % 2));
             direction = 1.0f;
         }
         else if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_LEFT))
         {
+            currentFrame = int(((SDL_GetTicks() / 100) % 2));
             direction = -1.0f;
+        }
+        else
+        {
+            currentFrame = 0;
         }
 
         if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_UP))
@@ -147,6 +198,7 @@ void Player::HandleInput()
                     if (jump == 2) velocity.y = firstJumpPower;
                     else velocity.y = secondJumpPower;
                     onPlatform = false;
+                    onHalfPlatform = false;
                     jump--;
                 }
             }
@@ -155,20 +207,17 @@ void Player::HandleInput()
         {
             prevButtonState = false;
         }
+
+        if (onHalfPlatform && InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_DOWN))
+        {
+            onPlatform = false;
+            onHalfPlatform = false;
+            jump = 1;
+            position.y += 1;
+            oldY += 1;
+        }
     }
 
     velocity.x += direction * speed;
     velocity.x *= 0.92f;
-}
-
-bool Player::IsOverlapped()
-{
-    for (auto& platform : platforms)
-    {
-        if (Collision::AABB(this, platform.get()))
-        {
-            return true;
-        }
-    }
-    return false;
 }

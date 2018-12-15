@@ -4,8 +4,8 @@ Camera* Camera::pInstance = nullptr;
 
 constexpr int screenWidth = 864;
 constexpr int screenHeight = 540;
-constexpr float sideBlank = 150;
-constexpr float upBlank = 93.75;
+constexpr float sideBlank = 200;
+constexpr float upBlank = 125; //sidBlank * 5 / 8
 
 void Camera::Update(const std::vector<std::unique_ptr<GameObject>>& players)
 {
@@ -37,6 +37,11 @@ void Camera::Update(const std::vector<std::unique_ptr<GameObject>>& players)
         {
             maxY = tempPos.y;
         }
+    }
+
+    if (maxY > 400)
+    {
+        maxY = 400;
     }
 
     if ((maxX - minX) / (maxY - minY) > (screenWidth - sideBlank * 2) / (screenHeight - upBlank * 2))
