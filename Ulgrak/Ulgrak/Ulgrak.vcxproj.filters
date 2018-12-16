@@ -1,15 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="Components.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="TrasformComponent.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Game.h" />
@@ -17,9 +8,6 @@
     <ClInclude Include="LoaderParams.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Vector2D.h" />
-    <ClInclude Include="GameOverState.h">
-      <Filter>States</Filter>
-    </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>States</Filter>
     </ClInclude>
@@ -71,9 +59,6 @@
     <ClInclude Include="TextPrinter.h" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="ECS">
-      <UniqueIdentifier>{eabd9252-4d2e-45cb-9344-6c9d51ab52a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Objects">
       <UniqueIdentifier>{a0263e5b-d2c0-4d8c-a45f-e0919eb0227b}</UniqueIdentifier>
     </Filter>
@@ -88,9 +73,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Vector2D.cpp" />
-    <ClCompile Include="GameOverState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
     <ClCompile Include="GameState.cpp">
       <Filter>States</Filter>
     </ClCompile>

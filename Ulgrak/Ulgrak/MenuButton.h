@@ -17,9 +17,9 @@ public:
     virtual void Update();
 
 private:
-    bool released;
-
     void(*callback)();
+
+    bool released;
 };
 
 #endif

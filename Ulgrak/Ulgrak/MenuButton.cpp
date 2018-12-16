@@ -4,7 +4,7 @@
 
 MenuButton::MenuButton(const LoaderParams& pParams, void(*callback)()) : GameObject(pParams), callback(callback)
 {
-
+    released = false;
 }
 
 void MenuButton::Draw()
@@ -20,17 +20,17 @@ void MenuButton::Update()
         && pMousePos.y < (position.y + height * scale)
         && pMousePos.y > position.y)
     {
+        currentFrame = MOUSE_OVER;
         if (InputHandler::Instance()->GetMouseButtonState(LEFT) && released) {
-            currentFrame = CLICKED;
             callback();
             released = false;
         }
         else if (!InputHandler::Instance()->GetMouseButtonState(LEFT)) {
             released = true;
-            currentFrame = MOUSE_OVER;
         }
     }
     else {
         currentFrame = MOUSE_OUT;
+        released = false;
     }
 }
