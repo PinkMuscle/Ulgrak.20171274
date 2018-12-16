@@ -124,7 +124,7 @@ void PlayState::Render()
 
     //수명 표시
     TextPrinter::Instance()->Draw("x" + std::to_string(players[0]->GetLife()), 295, 495, 2);
-    TextPrinter::Instance()->Draw("x" + std::to_string(players[1]->GetLife()), 864 - 200 - 30 * 4 + 95, 495, 2);
+    TextPrinter::Instance()->Draw("x" + std::to_string(players[1]->GetLife()), 864 - 200 - 132 + 95, 495, 2);
     //총알 수 표시
     if (players[0]->GetMagazine() == -1)
     {
@@ -136,11 +136,11 @@ void PlayState::Render()
     }
     if (players[1]->GetMagazine() == -1)
     {
-        TextPrinter::Instance()->Draw("in", 864 - 200 - 30 * 4 + 95, 520, 2);
+        TextPrinter::Instance()->Draw("in", 864 - 200 - 132 + 95, 520, 2);
     }
     else
     {
-        TextPrinter::Instance()->Draw("x" + std::to_string(players[1]->GetMagazine()), 864 - 200 - 30 * 4 + 95, 520, 2);
+        TextPrinter::Instance()->Draw("x" + std::to_string(players[1]->GetMagazine()), 864 - 200 - 132 + 95, 520, 2);
     }
 }
 
@@ -250,17 +250,17 @@ bool PlayState::OnEnter()
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(256, 100 - 256, 31, 4, 4, "halfplatform", "HALF")));
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(384, 100 - 256, 32, 8, 4, "platform")));
     //UI
-    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(200, 480, 32, 30, 4, "status")));
-    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 30 * 4, 480, 32, 30, 4, "status")));
+    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(200, 480, 32, 30, 4.4f, "status")));
+    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 132, 480, 32, 30, 4.4f, "status")));
 
     ui.emplace_back(std::make_unique<UIBox>(LoaderParams(200, 480, 22, 25, 3, "player1_icon")));
-    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 30 * 4, 480, 22, 25, 3, "player2_icon")));
+    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 132, 480, 22, 25, 3, "player2_icon")));
 
     ui.emplace_back(std::make_unique<UIBox>(LoaderParams(270, 494, 7, 6, 3, "life_icon")));
-    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 30 * 4 + 70, 494, 7, 6, 3, "life_icon")));
+    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 132 + 70, 494, 7, 6, 3, "life_icon")));
 
     ui.emplace_back(std::make_unique<UIBox>(LoaderParams(270, 519, 7, 6, 3, "bullet_icon")));
-    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 30 * 4 + 70, 519, 7, 6, 3, "bullet_icon")));
+    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 132 + 70, 519, 7, 6, 3, "bullet_icon")));
 
     nextSpawn = SDL_GetTicks() + spawnDelay - 5000u;
     gameOver = false;
