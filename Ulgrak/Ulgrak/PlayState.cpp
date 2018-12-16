@@ -250,7 +250,7 @@ bool PlayState::OnEnter()
     ui.emplace_back(std::make_unique<UIBox>(LoaderParams(270, 519, 7, 6, 3, "bullet_icon")));
     ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 30 * 4 + 70, 519, 7, 6, 3, "bullet_icon")));
 
-    nextSpawn = SDL_GetTicks() + spawnDelay - 5000;
+    nextSpawn = SDL_GetTicks() + spawnDelay - 5000u;
     gameOver = false;
     Camera::Instance()->Init();
 
@@ -331,11 +331,6 @@ void PlayState::CheckCollision()
 
 void PlayState::Refresh()
 {
-    players.erase
-    (
-        std::remove_if(std::begin(players), std::end(players), [](const std::unique_ptr<Player> &object) {return !object->IsActive(); }),
-        std::end(players)
-    );
     items.erase
     (
         std::remove_if(std::begin(items), std::end(items), [](const std::unique_ptr<GameObject> &object) {return !object->IsActive(); }),

@@ -11,17 +11,17 @@ const std::string PauseState::pauseID = "PAUSE";
 
 bool PauseState::OnEnter()
 {
-    if (!TextureManager::Instance()->Load("Assets/resume.png", "resumebutton"))
+    if (!TextureManager::Instance()->Load("Assets/restart.png", "restart"))
     {
         return false;
     }
-    if (!TextureManager::Instance()->Load("Assets/main.png", "mainbutton"))
+    if (!TextureManager::Instance()->Load("Assets/mainmenu.png", "mainmenu"))
     {
         return false;
     }
 
-    gameObjects.emplace_back(std::make_unique<MenuButton>(LoaderParams(864 / 2 - 100, 150, 200, 80, "mainbutton"), PauseToMain));
-    gameObjects.emplace_back(std::make_unique<MenuButton>(LoaderParams(864 / 2 - 100, 300, 200, 80, "resumebutton"), ResumePlay));
+    gameObjects.emplace_back(std::make_unique<MenuButton>(LoaderParams(864 / 2 - 100, 180, 56, 12, 4, "restart"), Restart));
+    gameObjects.emplace_back(std::make_unique<MenuButton>(LoaderParams(864 / 2 - 100, 270, 56, 12, 4, "mainmenu"), PauseToMain));
 
     std::cout << "entering PauseState\n";
 
@@ -31,8 +31,8 @@ bool PauseState::OnEnter()
 bool PauseState::OnExit()
 {
     gameObjects.clear();
-    TextureManager::Instance()->ClearFromTextureMap("resumebutton");
-    TextureManager::Instance()->ClearFromTextureMap("mainbutton");
+    TextureManager::Instance()->ClearFromTextureMap("restart");
+    TextureManager::Instance()->ClearFromTextureMap("mainmenu");
     InputHandler::Instance()->Reset();
     std::cout << "exiting PauseState\n";
 
@@ -44,7 +44,7 @@ void PauseState::PauseToMain()
     Game::Instance()->GetStateMachine()->ChangeState(MenuState::Instance());
 }
 
-void PauseState::ResumePlay()
+void PauseState::Restart()
 {
     Game::Instance()->GetStateMachine()->PopState();
 }

@@ -270,5 +270,6 @@ void Player::Die()
         life--;
         position = Vector2D(240, -32);
         velocity.Zero();
+        ChangeGun("G0");
     }
 }

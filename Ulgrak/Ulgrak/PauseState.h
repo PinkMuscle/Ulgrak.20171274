@@ -23,7 +23,7 @@ private:
     static PauseState* pInstance;
     static const std::string pauseID;
     static void PauseToMain();
-    static void ResumePlay();
+    static void Restart();
 };
 
 #endif
