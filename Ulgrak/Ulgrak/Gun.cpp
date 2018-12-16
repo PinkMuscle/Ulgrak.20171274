@@ -28,7 +28,6 @@ void Gun::Draw()
 void Gun::Change(std::string tag)
 {
     this->tag = tag;
-    nextFire = SDL_GetTicks();
 
     if (tag == "G0")
     {
@@ -44,10 +43,12 @@ void Gun::Change(std::string tag)
         textureID = "gun1";
         width = 19;
         height = 11;
-        magazine = 4;
+        magazine = 6;
         damage = 20;
         fireRate = 600;
     }
+
+    nextFire = SDL_GetTicks() + fireRate;
 }
 
 void Gun::Shot()

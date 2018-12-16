@@ -14,6 +14,7 @@ public:
     void ChangeGun(std::string tag);
     void Damaged(float vel);
     int GetLife() const { return life; }
+    int GetMagazine() const;
 
 private:
 	void HandleInput();

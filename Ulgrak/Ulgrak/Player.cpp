@@ -3,7 +3,7 @@
 #include "Collision.h"
 #include <iostream>
 
-constexpr float speed = 0.2f;
+constexpr float speed = 0.15f;
 constexpr float firstJumpPower = -3.0f;
 constexpr float secondJumpPower = -3.6f;
 constexpr float gravity = 0.07f;
@@ -15,62 +15,68 @@ Player::Player(const LoaderParams& pParams, std::vector<std::unique_ptr<GameObje
 
 void Player::Draw()
 {
-    GameObject::Draw();
-    gun.Draw();
+    if (life > 0)
+    {
+        GameObject::Draw();
+        gun.Draw();
+    }
 }
 
 void Player::Update()
 {
-    //아래가 비었는지 체크
-    if (onPlatform)
+    if (life > 0)
     {
-        position.y += 1;
-
-        int platformCount = 0;
-        int halfCount = 0;
-        for (auto& platform : platforms)
+        //아래가 비었는지 체크
+        if (onPlatform)
         {
-            if (Collision::AABB(this, platform.get()))
+            position.y += 1;
+
+            int platformCount = 0;
+            int halfCount = 0;
+            for (auto& platform : platforms)
             {
-                platformCount++;
-                if (platform->GetTag() == "HALF")
+                if (Collision::AABB(this, platform.get()))
                 {
-                    halfCount++;
+                    platformCount++;
+                    if (platform->GetTag() == "HALF")
+                    {
+                        halfCount++;
+                    }
                 }
             }
+            if (platformCount == 0)
+            {
+                onPlatform = false;
+                onHalfPlatform = false;
+                jump = 1;
+            }
+            else if (platformCount == halfCount)
+            {
+                onHalfPlatform = true;
+            }
+            else
+            {
+                onHalfPlatform = false;
+            }
+
+            position.y -= 1;
         }
-        if (platformCount == 0)
+
+        HandleInput();
+        if (!onPlatform)
         {
-            onPlatform = false;
-            onHalfPlatform = false;
-            jump = 1;
+            velocity.y += gravity;
         }
-        else if (platformCount == halfCount)
+
+        CheckCollision();
+
+        if (position.y > 1600)
         {
-            onHalfPlatform = true;
-        }
-        else
-        {
-            onHalfPlatform = false;
+            Die();
         }
 
-        position.y -= 1;
+        gun.Update();
     }
-
-    HandleInput();
-    if (!onPlatform)
-    {
-        velocity.y += gravity;
-    }
-
-    CheckCollision();
-
-    if (position.y > 1200)
-    {
-        Die();
-    }
-
-    gun.Update();
 }
 
 void Player::ChangeGun(std::string tag)
@@ -82,6 +88,11 @@ void Player::Damaged(float vel)
 {
     velocity.x += vel;
     nextWake = SDL_GetTicks() + 200;
+}
+
+int Player::GetMagazine() const
+{
+    return gun.GetMagazine();
 }
 
 void Player::HandleInput()
@@ -254,14 +265,10 @@ void Player::CheckCollision()
 
 void Player::Die()
 {
-    life--;
-
-    if (life == 0)
+    if (life > 0)
     {
-        Destroy();
-        return;
+        life--;
+        position = Vector2D(240, -32);
+        velocity.Zero();
     }
-
-    position = Vector2D(240, -32);
-    velocity.Zero();
 }

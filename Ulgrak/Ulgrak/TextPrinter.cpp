@@ -5,11 +5,11 @@
 TextPrinter* TextPrinter::pInstance = nullptr;
 
 constexpr int numWidth = 6;
-constexpr int numHeight = 8;
+constexpr int numHeight = 7;
 
 bool TextPrinter::Init()
 {
-    SDL_Surface* pTempSurface = IMG_Load("../assets/numbers.png");
+    SDL_Surface* pTempSurface = IMG_Load("Assets/numbers.png");
     if (pTempSurface == 0)
     {
         return false;
@@ -64,20 +64,20 @@ void TextPrinter::Draw(char ch, int x, int y, int scale)
     case '9':
         column = 9;
         break;
-    case ':':
+    case 'x':
         column = 10;
         break;
-    case 'x':
-        column = 11;
-        break;
     case 'X':
+        column = 10;
+        break;
+    case 'i':
         column = 11;
         break;
-    case ' ':
+    case 'n':
         column = 12;
         break;
     default:
-        column = 12;
+        column = 13;
         break;
     }
 

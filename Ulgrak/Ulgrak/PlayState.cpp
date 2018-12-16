@@ -12,6 +12,7 @@
 #include "Platform.h"
 #include "GunGenerator.h"
 #include "Bullet.h"
+#include "UIBox.h"
 //Standard
 #include <iostream>
 #include <algorithm>
@@ -19,10 +20,12 @@
 PlayState* PlayState::pInstance = nullptr;
 const std::string PlayState::playID = "PLAY";
 
-constexpr Uint32 spawnDelay = 8000u;
+constexpr Uint32 spawnDelay = 9000u;
 
 void PlayState::Update()
 {
+    int playerCount = 0;
+
     if (InputHandler::Instance()->IsKeyDown(SDL_SCANCODE_ESCAPE))
     {
         Game::Instance()->GetStateMachine()->ChangeState(PauseState::Instance());
@@ -53,10 +56,22 @@ void PlayState::Update()
     }
 
     background->Update();
+
     for (auto& objects : players)
     {
+        if (objects->GetLife() == 0)
+        {
+            continue;
+        }
+        playerCount++;
         objects->Update();
     }
+    if (!gameOver && playerCount <= 1)
+    {
+        gameOver = true;
+        ui.emplace_back(std::make_unique<UIBox>(LoaderParams(120, 30, 100, 24, 6, "winner")));
+    }
+
     for (auto& objects : items)
     {
         objects->Update();
@@ -107,8 +122,26 @@ void PlayState::Render()
         objects->Draw();
     }
 
-    ////타이머 표시
-    //TextPrinter::Instance()->Draw(Timer::Instance()->GetTime(), 180, 28, 5);
+    //수명 표시
+    TextPrinter::Instance()->Draw("x" + std::to_string(players[0]->GetLife()), 295, 495, 2);
+    TextPrinter::Instance()->Draw("x" + std::to_string(players[1]->GetLife()), 864 - 200 - 30 * 4 + 95, 495, 2);
+    //총알 수 표시
+    if (players[0]->GetMagazine() == -1)
+    {
+        TextPrinter::Instance()->Draw("in", 295, 520, 2);
+    }
+    else
+    {
+        TextPrinter::Instance()->Draw("x" + std::to_string(players[0]->GetMagazine()), 295, 520, 2);
+    }
+    if (players[1]->GetMagazine() == -1)
+    {
+        TextPrinter::Instance()->Draw("in", 864 - 200 - 30 * 4 + 95, 520, 2);
+    }
+    else
+    {
+        TextPrinter::Instance()->Draw("x" + std::to_string(players[1]->GetMagazine()), 864 - 200 - 30 * 4 + 95, 520, 2);
+    }
 }
 
 bool PlayState::OnEnter()
@@ -157,12 +190,40 @@ bool PlayState::OnEnter()
     {
         return false;
     }
+    if (!TextureManager::Instance()->Load("Assets/status.png", "status"))
+    {
+        return false;
+    }
+    if (!TextureManager::Instance()->Load("Assets/player1_icon.png", "player1_icon"))
+    {
+        return false;
+    }
+    if (!TextureManager::Instance()->Load("Assets/player2_icon.png", "player2_icon"))
+    {
+        return false;
+    }
+    if (!TextureManager::Instance()->Load("Assets/player3_icon.png", "player3_icon"))
+    {
+        return false;
+    }
+    if (!TextureManager::Instance()->Load("Assets/life_icon.png", "life_icon"))
+    {
+        return false;
+    }
+    if (!TextureManager::Instance()->Load("Assets/bullet_icon.png", "bullet_icon"))
+    {
+        return false;
+    }
+    if (!TextureManager::Instance()->Load("Assets/winner.png", "winner"))
+    {
+        return false;
+    }
 
+    //배경
     background = std::make_unique<Background>(LoaderParams(-1296 + 256, -810, 1728, 1080, 1.5f, "background"));
-
+    //플레이어
     players.emplace_back(std::make_unique<Player>(LoaderParams(100, 20 - 128, 32, 32, "player1", "1P"), platforms, projectiles));
     players.emplace_back(std::make_unique<Player>(LoaderParams(400, 20 - 128, 32, 32, "player2", "2P"), platforms, projectiles));
-
     //1층 플랫폼
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(0, 100, 32, 8, 4, "platform")));
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(128, 100, 32, 8, 4, "platform")));
@@ -176,8 +237,21 @@ bool PlayState::OnEnter()
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(128, 100 - 256, 31, 4, 4, "halfplatform", "HALF")));
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(256, 100 - 256, 31, 4, 4, "halfplatform", "HALF")));
     platforms.emplace_back(std::make_unique<Platform>(LoaderParams(384, 100 - 256, 32, 8, 4, "platform")));
+    //UI
+    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(200, 480, 32, 30, 4, "status")));
+    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 30 * 4, 480, 32, 30, 4, "status")));
 
-    nextSpawn = SDL_GetTicks() + spawnDelay;
+    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(200, 480, 22, 25, 3, "player1_icon")));
+    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 30 * 4, 480, 22, 25, 3, "player2_icon")));
+
+    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(270, 494, 7, 6, 3, "life_icon")));
+    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 30 * 4 + 70, 494, 7, 6, 3, "life_icon")));
+
+    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(270, 519, 7, 6, 3, "bullet_icon")));
+    ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 30 * 4 + 70, 519, 7, 6, 3, "bullet_icon")));
+
+    nextSpawn = SDL_GetTicks() + spawnDelay - 5000;
+    gameOver = false;
     Camera::Instance()->Init();
 
     std::cout << "entering PlayState\n";
@@ -206,6 +280,13 @@ bool PlayState::OnExit()
     TextureManager::Instance()->ClearFromTextureMap("gun1");
     TextureManager::Instance()->ClearFromTextureMap("bullet");
     TextureManager::Instance()->ClearFromTextureMap("bullet_purple");
+    TextureManager::Instance()->ClearFromTextureMap("status");
+    TextureManager::Instance()->ClearFromTextureMap("player1_icon");
+    TextureManager::Instance()->ClearFromTextureMap("player2_icon");
+    TextureManager::Instance()->ClearFromTextureMap("player3_icon");
+    TextureManager::Instance()->ClearFromTextureMap("life_icon");
+    TextureManager::Instance()->ClearFromTextureMap("bullet_icon");
+    TextureManager::Instance()->ClearFromTextureMap("winner");
 
     std::cout << "exiting PlayState\n";
 
@@ -222,7 +303,7 @@ void PlayState::CheckCollision()
             {
                 if (i->IsActive())
                 {
-                    dynamic_cast<Player*>(p.get())->ChangeGun(i->GetTag());
+                    p->ChangeGun(i->GetTag());
                     i->Destroy();
                 }
             }
@@ -235,11 +316,11 @@ void PlayState::CheckCollision()
                 {
                     if (proj->GetVelocity().x > 0)
                     {
-                        dynamic_cast<Player*>(p.get())->Damaged(dynamic_cast<Bullet*>(proj.get())->GetDamage());
+                        p->Damaged(dynamic_cast<Bullet*>(proj.get())->GetDamage());
                     }
                     else
                     {
-                        dynamic_cast<Player*>(p.get())->Damaged(dynamic_cast<Bullet*>(proj.get())->GetDamage() * -1);
+                        p->Damaged(dynamic_cast<Bullet*>(proj.get())->GetDamage() * -1);
                     }
                     proj->Destroy();
                 }
@@ -252,7 +333,7 @@ void PlayState::Refresh()
 {
     players.erase
     (
-        std::remove_if(std::begin(players), std::end(players), [](const std::unique_ptr<GameObject> &object) {return !object->IsActive(); }),
+        std::remove_if(std::begin(players), std::end(players), [](const std::unique_ptr<Player> &object) {return !object->IsActive(); }),
         std::end(players)
     );
     items.erase

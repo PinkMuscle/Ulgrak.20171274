@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include <iostream>
 
 Camera* Camera::pInstance = nullptr;
 
@@ -9,15 +8,22 @@ constexpr float sideBlank = 200;
 constexpr float upBlank = 125; //sidBlank * 5 / 8
 constexpr float followSpeed = 0.02f;
 
-void Camera::Update(const std::vector<std::unique_ptr<GameObject>>& players)
+void Camera::Update(const std::vector<std::unique_ptr<Player>>& players)
 {
     float minX, maxX, minY, maxY;
+    int playerCount = 0;
 
-    minX = maxX = players[0]->GetPosition().x;
-    minY = maxY = players[0]->GetPosition().y;
+    minX = maxX = 240;
+    minY = maxY = -32;
 
-    for (std::vector<std::unique_ptr<GameObject>>::size_type i = 1; i < players.size(); i++)
+    for (std::vector<std::unique_ptr<Player>>::size_type i = 0; i < players.size(); i++)
     {
+        if (players[i]->GetLife() == 0)
+        {
+            continue;
+        }
+        playerCount++;
+
         Vector2D tempPos = players[i]->GetPosition();
 
         if (tempPos.x < minX)
@@ -38,6 +44,18 @@ void Camera::Update(const std::vector<std::unique_ptr<GameObject>>& players)
         if (tempPos.y > maxY)
         {
             maxY = tempPos.y;
+        }
+    }
+
+    if (playerCount == 1)
+    {
+        for (auto& p : players)
+        {
+            if (p->GetLife() != 0)
+            {
+                minX = maxX = p->GetPosition().x;
+                minY = maxY = p->GetPosition().y;
+            }
         }
     }
 
@@ -70,17 +88,13 @@ void Camera::Update(const std::vector<std::unique_ptr<GameObject>>& players)
     oldUpY += (upY - oldUpY) * followSpeed;
 
     objScale = screenWidth / (oldRightX - oldLeftX);
-    std::cout << leftX << " / " << rightX << " / " << upY << std::endl;
 }
 
 void Camera::Init()
 {
-    //oldLeftX = -100;
-    //oldRightX = 600;
-    //oldUpY = 150;
     oldLeftX = -600;
     oldRightX = 1100;
-    oldUpY = -150;
+    oldUpY = -500;
 }
 
 int Camera::GetXOnCamera(const float& objX) const

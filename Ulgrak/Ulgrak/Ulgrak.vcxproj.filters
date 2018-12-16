@@ -68,6 +68,7 @@
     <ClInclude Include="Bullet.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="TextPrinter.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ECS">
@@ -135,5 +136,6 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="TextPrinter.cpp" />
   </ItemGroup>
 </Project>

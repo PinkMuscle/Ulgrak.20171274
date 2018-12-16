@@ -12,6 +12,7 @@ public:
     virtual void Update();
     void Change(std::string tag);
     void Shot();
+    int GetMagazine() const { return magazine; }
 
 private:
     GameObject& player;

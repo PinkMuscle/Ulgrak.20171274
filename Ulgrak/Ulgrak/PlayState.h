@@ -1,6 +1,7 @@
 #ifndef PlayState_h
 #define PlayState_h
 #include "GameState.h"
+#include "Player.h"
 #include <vector>
 #include <array>
 #include <memory>
@@ -30,10 +31,11 @@ private:
     static PlayState* pInstance;
     static const std::string playID;
     Uint32 nextSpawn;
+    bool gameOver;
 
     std::unique_ptr<GameObject> background;
     std::vector<std::unique_ptr<GameObject>> platforms;
-    std::vector<std::unique_ptr<GameObject>> players;
+    std::vector<std::unique_ptr<Player>> players;
     std::vector<std::unique_ptr<GameObject>> items;
     std::vector<std::unique_ptr<GameObject>> projectiles;
     std::vector<std::unique_ptr<GameObject>> effects;

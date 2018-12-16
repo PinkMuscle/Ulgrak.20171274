@@ -2,7 +2,7 @@
 #define Camera_h
 #include <vector>
 #include <memory>
-#include "GameObject.h"
+#include "Player.h"
 class Camera
 {
 public:
@@ -15,7 +15,7 @@ public:
         }
         return pInstance;
     }
-    void Update(const std::vector<std::unique_ptr<GameObject>>& players);
+    void Update(const std::vector<std::unique_ptr<Player>>& players);
     void Init();
     int GetXOnCamera(const float& objX) const;
     int GetYOnCamera(const float& objY) const;
