@@ -25,11 +25,6 @@ bool TextureManager::Load(std::string fileName, std::string id)
 
 void TextureManager::Draw(std::string id, int x, int y, int width, int height, float scale, SDL_RendererFlip flip)
 {
-    Draw(id, x, y, width, height, scale, 0, flip);
-}
-
-void TextureManager::Draw(std::string id, int x, int y, int width, int height, float scale, double angle, SDL_RendererFlip flip)
-{
     SDL_Rect srcRect;
     SDL_Rect dstRect;
 
@@ -40,10 +35,10 @@ void TextureManager::Draw(std::string id, int x, int y, int width, int height, f
 
     srcRect.w = width;
     srcRect.h = height;
-    dstRect.w = int (width * scale);
-    dstRect.h = int (height * scale);
+    dstRect.w = int(width * scale);
+    dstRect.h = int(height * scale);
 
-    SDL_RenderCopyEx(Game::Instance()->GetRenderer(), textureMap[id], &srcRect, &dstRect, angle, 0, flip);
+    SDL_RenderCopyEx(Game::Instance()->GetRenderer(), textureMap[id], &srcRect, &dstRect, 0, 0, flip);
 }
 
 void TextureManager::DrawFrame(std::string id, int x, int y, int width, int height, int currentRow, int currentFrame, float scale, SDL_RendererFlip flip)

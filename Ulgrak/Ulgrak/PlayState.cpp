@@ -20,7 +20,7 @@
 PlayState* PlayState::pInstance = nullptr;
 const std::string PlayState::playID = "PLAY";
 
-constexpr Uint32 spawnDelay = 9000u;
+constexpr Uint32 spawnDelay = 8000u;
 
 void PlayState::Update()
 {
@@ -182,11 +182,23 @@ bool PlayState::OnEnter()
     {
         return false;
     }
+    if (!TextureManager::Instance()->Load("Assets/gun2.png", "gun2"))
+    {
+        return false;
+    }
+    if (!TextureManager::Instance()->Load("Assets/gun3.png", "gun3"))
+    {
+        return false;
+    }
     if (!TextureManager::Instance()->Load("Assets/bullet.png", "bullet"))
     {
         return false;
     }
     if (!TextureManager::Instance()->Load("Assets/bullet_purple.png", "bullet_purple"))
+    {
+        return false;
+    }
+    if (!TextureManager::Instance()->Load("Assets/bullet_big.png", "bullet_big"))
     {
         return false;
     }
@@ -278,8 +290,11 @@ bool PlayState::OnExit()
     TextureManager::Instance()->ClearFromTextureMap("gungenerator");
     TextureManager::Instance()->ClearFromTextureMap("gun0");
     TextureManager::Instance()->ClearFromTextureMap("gun1");
+    TextureManager::Instance()->ClearFromTextureMap("gun2");
+    TextureManager::Instance()->ClearFromTextureMap("gun3");
     TextureManager::Instance()->ClearFromTextureMap("bullet");
     TextureManager::Instance()->ClearFromTextureMap("bullet_purple");
+    TextureManager::Instance()->ClearFromTextureMap("bullet_big");
     TextureManager::Instance()->ClearFromTextureMap("status");
     TextureManager::Instance()->ClearFromTextureMap("player1_icon");
     TextureManager::Instance()->ClearFromTextureMap("player2_icon");
