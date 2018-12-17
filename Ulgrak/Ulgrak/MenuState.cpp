@@ -33,8 +33,8 @@ bool MenuState::OnEnter()
     }
 
     gameObjects.emplace_back(std::make_unique<UIBox>(LoaderParams(0, 0, 1728, 1080, "background"), 800, 2));
-    gameObjects.emplace_back(std::make_unique<MenuButton>(LoaderParams(520, 170, 47, 12, 4, "2p_play"), MenuToPlay));
-    gameObjects.emplace_back(std::make_unique<MenuButton>(LoaderParams(520, 240, 47, 12, 4, "3p_play"), MenuToPlay));
+    gameObjects.emplace_back(std::make_unique<MenuButton>(LoaderParams(520, 170, 47, 12, 4, "2p_play"), MenuToPlay2));
+    gameObjects.emplace_back(std::make_unique<MenuButton>(LoaderParams(520, 240, 47, 12, 4, "3p_play"), MenuToPlay3));
     gameObjects.emplace_back(std::make_unique<MenuButton>(LoaderParams(520, 310, 47, 12, 4, "exit"), ExitFromMenu));
     gameObjects.emplace_back(std::make_unique<UIBox>(LoaderParams(160, 180, 100, 54, 3, "title")));
 
@@ -56,8 +56,15 @@ bool MenuState::OnExit()
     return true;
 }
 
-void MenuState::MenuToPlay()
+void MenuState::MenuToPlay2()
 {
+    Game::Instance()->Set3P(false);
+    Game::Instance()->GetStateMachine()->ChangeState(PlayState::Instance());
+}
+
+void MenuState::MenuToPlay3()
+{
+    Game::Instance()->Set3P(true);
     Game::Instance()->GetStateMachine()->ChangeState(PlayState::Instance());
 }
 

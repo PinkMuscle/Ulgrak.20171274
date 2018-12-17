@@ -142,6 +142,19 @@ void PlayState::Render()
     {
         TextPrinter::Instance()->Draw("x" + std::to_string(players[1]->GetMagazine()), 864 - 200 - 132 + 95, 520, 2);
     }
+    //3P¿ë
+    if (Game::Instance()->Is3P())
+    {
+        TextPrinter::Instance()->Draw("x" + std::to_string(players[2]->GetLife()), 461, 495, 2);
+        if (players[2]->GetMagazine() == -1)
+        {
+            TextPrinter::Instance()->Draw("in", 461, 520, 2);
+        }
+        else
+        {
+            TextPrinter::Instance()->Draw("x" + std::to_string(players[1]->GetMagazine()), 461, 520, 2);
+        }
+    }
 }
 
 bool PlayState::OnEnter()
@@ -261,6 +274,15 @@ bool PlayState::OnEnter()
 
     ui.emplace_back(std::make_unique<UIBox>(LoaderParams(270, 519, 7, 6, 3, "bullet_icon")));
     ui.emplace_back(std::make_unique<UIBox>(LoaderParams(864 - 200 - 132 + 70, 519, 7, 6, 3, "bullet_icon")));
+    //3P¿ë
+    if (Game::Instance()->Is3P())
+    {
+        players.emplace_back(std::make_unique<Player>(LoaderParams(250, 20 - 128, 32, 32, "player3", "3P"), platforms, projectiles));
+        ui.emplace_back(std::make_unique<UIBox>(LoaderParams(366, 480, 32, 30, 4.4f, "status")));
+        ui.emplace_back(std::make_unique<UIBox>(LoaderParams(366, 480, 22, 25, 3, "player3_icon")));
+        ui.emplace_back(std::make_unique<UIBox>(LoaderParams(436, 494, 7, 6, 3, "life_icon")));
+        ui.emplace_back(std::make_unique<UIBox>(LoaderParams(436, 519, 7, 6, 3, "bullet_icon")));
+    }
 
     nextSpawn = SDL_GetTicks() + spawnDelay - 5000u;
     gameOver = false;

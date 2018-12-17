@@ -32,6 +32,7 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 
         srand((unsigned int)time(NULL));
 
+        InputHandler::Instance()->Init();
         pGameStateMachine = new GameStateMachine();
         pGameStateMachine->ChangeState(MenuState::Instance());
 

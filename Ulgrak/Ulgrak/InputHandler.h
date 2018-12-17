@@ -11,6 +11,14 @@ enum mouse_buttons
 	RIGHT = 2
 };
 
+enum controller_buttons
+{
+    CTRL_RIGHT = 0,
+    CTRL_LEFT = 1,
+    CTRL_UP = 2,
+    CTRL_DOWN = 3
+};
+
 class InputHandler
 {
 public:
@@ -25,14 +33,17 @@ public:
 
 	void Update();
 	void Clean();
+    void Init();
     void Reset();
 	bool IsKeyDown(SDL_Scancode key) const;
+	bool IsControllerButtonDown() const;
 	bool GetMouseButtonState(mouse_buttons buttonNumber) const
 	{
 		return mouseButtonStates[buttonNumber];
 	}
     Vector2D GetMousePosition() const;
-    Vector2D GetMousePositionOnCamera() const;
+    bool GetControllerAnalog(controller_buttons dir);
+    
 
 private:
 	InputHandler();
@@ -41,10 +52,13 @@ private:
 	const Uint8* keyStates;
 	std::vector<bool> mouseButtonStates;
 	Vector2D mousePosition;
+    SDL_GameController* controller = nullptr;
+    int controllerX = 0, controllerY = 0;
 
 	void OnMouseMove(const SDL_Event& event);
 	void OnMouseButtonDown(const SDL_Event& event);
 	void OnMouseButtonUp(const SDL_Event& event);
+    void OnControllerMove(const SDL_Event& event);
 };
 
 #endif

@@ -203,6 +203,57 @@ void Player::HandleInput()
                 gun.Shot();
             }
         }
+        else if (tag == "3P")
+        {
+            if (InputHandler::Instance()->GetControllerAnalog(CTRL_RIGHT))
+            {
+                currentFrame = int(((SDL_GetTicks() / 100) % 2));
+                direction = 1.0f;
+            }
+            else if (InputHandler::Instance()->GetControllerAnalog(CTRL_LEFT))
+            {
+                currentFrame = int(((SDL_GetTicks() / 100) % 2));
+                direction = -1.0f;
+            }
+            else
+            {
+                currentFrame = 0;
+            }
+
+            if (InputHandler::Instance()->GetControllerAnalog(CTRL_UP))
+            {
+                if (!prevButtonState)
+                {
+                    prevButtonState = true;
+                    if (jump > 0)
+                    {
+                        if (jump == 2) velocity.y = firstJumpPower;
+                        else velocity.y = secondJumpPower;
+                        onPlatform = false;
+                        onHalfPlatform = false;
+                        jump--;
+                    }
+                }
+            }
+            else
+            {
+                prevButtonState = false;
+            }
+
+            if (onHalfPlatform && InputHandler::Instance()->GetControllerAnalog(CTRL_DOWN))
+            {
+                onPlatform = false;
+                onHalfPlatform = false;
+                jump = 1;
+                position.y += 1;
+                oldY += 1;
+            }
+
+            if (InputHandler::Instance()->IsControllerButtonDown())
+            {
+                gun.Shot();
+            }
+        }
     }
 
     velocity.x += direction * speed;

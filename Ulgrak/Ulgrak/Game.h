@@ -24,6 +24,8 @@ public:
 	void Quit();
 	void Clean();
 	bool IsRunning() const { return running; }
+    bool Is3P() const { return is3P; }
+    void Set3P(bool b) { is3P = b; }
     SDL_Renderer* GetRenderer() const { return pRenderer; }
     GameStateMachine* GetStateMachine() const { return pGameStateMachine; }
 
@@ -34,6 +36,7 @@ private:
 	SDL_Window* pWindow;
 	SDL_Renderer* pRenderer;
 	bool running;
+    bool is3P;
 
     GameStateMachine* pGameStateMachine;
 };

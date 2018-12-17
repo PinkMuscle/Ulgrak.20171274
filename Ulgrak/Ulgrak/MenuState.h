@@ -23,7 +23,8 @@ private:
     static MenuState* pInstance;
     static const std::string menuID;
 
-    static void MenuToPlay();
+    static void MenuToPlay2();
+    static void MenuToPlay3();
     static void ExitFromMenu();
 };
 
