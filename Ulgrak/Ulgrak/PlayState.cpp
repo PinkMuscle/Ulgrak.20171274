@@ -266,6 +266,8 @@ bool PlayState::OnEnter()
     gameOver = false;
     Camera::Instance()->Init();
 
+    SDL_ShowCursor(SDL_DISABLE);
+
     std::cout << "entering PlayState\n";
 
     return true;
@@ -302,6 +304,8 @@ bool PlayState::OnExit()
     TextureManager::Instance()->ClearFromTextureMap("life_icon");
     TextureManager::Instance()->ClearFromTextureMap("bullet_icon");
     TextureManager::Instance()->ClearFromTextureMap("winner");
+
+    SDL_ShowCursor(SDL_ENABLE);
 
     std::cout << "exiting PlayState\n";
 
